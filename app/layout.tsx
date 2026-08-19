@@ -7,7 +7,7 @@ import "./globals.css"
 import { siteConfig } from "@/content/site"
 import { ClientLayout } from "@/components/client-layout"
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://deng-and-lara.weddinginvitationrsvp.com/"
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://deng-and-lara-silver.weddinginvitationrsvp.com/"
 const canonicalUrl = siteUrl.replace(/\/$/, "")
   const desktopHero = "/Details/LinkPreview-new.jpg"
 const mobileHero = "/Details/LinkPreview-new.jpg"
