@@ -2,25 +2,14 @@
 
 import { Section } from "@/components/section"
 import { SectionCornerDecorations } from "@/components/section-corner-decorations"
-import { useState, useEffect, type ReactNode } from "react"
+import { useEffect, useState, type ReactNode } from "react"
 import { QRCodeSVG } from "qrcode.react"
 import { useSiteConfig } from "@/hooks/use-site-config"
 import { layeredSectionTitleSize, sectionType } from "@/lib/section-typography"
 import Image from "next/image"
 import localFont from "next/font/local"
 import { Cinzel } from "next/font/google"
-import {
-  Shirt,
-  Clock,
-  Utensils,
-  Copy,
-  Check,
-  Navigation,
-  Heart,
-  Camera,
-  X,
-  MapPin,
-} from "lucide-react"
+import { Copy, Check, Navigation, MapPin, X } from "lucide-react"
 
 const cinzel = Cinzel({
   subsets: ["latin"],
@@ -63,7 +52,26 @@ const softPanelStyle = {
 const QR_FG = "var(--color-motif-deep)"
 const QR_BG = "#FAF7F2"
 
-function SectionIconDivider({ icon }: { icon: React.ReactNode }) {
+const RECEPTION = {
+  name: "San Pablo MPC Pavilion",
+  city: "Malolos, Bulacan",
+  fullAddress: "San Pablo MPC Pavilion, Malolos, Bulacan",
+  mapsUrl: "https://maps.app.goo.gl/nyXehbkv6yCjHQLM6",
+  venueImage: "/Details/venue.jpg",
+  mapImage: "/Details/map_image.jpg",
+} as const
+
+const ct = {
+  label: sectionType.label,
+  body: sectionType.text,
+  bodyLg: sectionType.subheader,
+  btn: sectionType.text,
+  month: "text-lg sm:text-2xl md:text-3xl lg:text-4xl",
+  dayNum: "text-3xl sm:text-5xl md:text-6xl lg:text-7xl",
+  year: "text-lg sm:text-2xl md:text-3xl lg:text-4xl",
+} as const
+
+function SectionIconDivider({ icon }: { icon: ReactNode }) {
   return (
     <div className="flex items-center justify-center gap-2 pt-1 sm:pt-2">
       <span
@@ -104,7 +112,7 @@ function DetailsTitle() {
           color: "var(--color-welcome-navy)",
         }}
       >
-        Event Details
+        Reception
       </span>
       <span
         aria-hidden
@@ -117,622 +125,44 @@ function DetailsTitle() {
             "0 1px 0 color-mix(in srgb, var(--color-welcome-bg) 95%, white), 0 0 10px color-mix(in srgb, var(--color-welcome-bg) 65%, white)",
         }}
       >
-        our special day
+        join us
       </span>
-      <span className="sr-only">our special day</span>
+      <span className="sr-only">join us</span>
     </h2>
   )
 }
 
-// Card and section type — aligned with shared sectionType scale
-const ct = {
-  label: sectionType.label,
-  labelSm: "text-[11px] sm:text-xs md:text-sm",
-  body: sectionType.text,
-  bodyMd: "text-[0.875rem] sm:text-[0.9375rem] md:text-base lg:text-lg",
-  bodyLg: sectionType.subheader,
-  subhead: "text-[0.875rem] sm:text-[0.9375rem] md:text-base lg:text-lg",
-  time: "text-sm sm:text-base md:text-lg lg:text-2xl",
-  cardTitle: "text-base sm:text-xl md:text-2xl lg:text-3xl",
-  overlayTitle: "text-base sm:text-xl md:text-2xl lg:text-3xl",
-  overlaySub: sectionType.text,
-  month: "text-lg sm:text-2xl md:text-3xl lg:text-4xl",
-  dayNum: "text-3xl sm:text-5xl md:text-6xl lg:text-7xl",
-  year: "text-lg sm:text-2xl md:text-3xl lg:text-4xl",
-  sectionTitle: "text-base sm:text-xl md:text-2xl lg:text-3xl",
-  attireCardTitle: "text-base sm:text-xl md:text-2xl lg:text-3xl",
-  btn: sectionType.text,
-  noteTitle: "text-2xl sm:text-3xl md:text-4xl",
-  reminderHead: "text-lg sm:text-xl md:text-2xl",
-  reminderBody: "text-[0.875rem] sm:text-[0.9375rem] md:text-base lg:text-lg",
-} as const
-
-const attireGuide = {
-  sponsors: {
-    image: "/Details/sponsors.png",
-    imageAspect: "669/373",
-    ladies: {
-      colors: ["#D8B08F", "#E9C8B3", "#CFA08A"] as const,
-      description: "Champagne, Soft Beige, or Nude satin gowns with a formal, elegant silhouette",
-    },
-    gentlemen: {
-      colors: ["#111111", "#F5F5F5", "#CFA08A"] as const,
-      description: "Black formal suits with white inner shirts, complemented by champagne or nude neckties",
-    },
-  },
-  
-  entourage: {
-    image: "/Details/entourage.png",
-    imageAspect: "669/373",
-    ladies: {
-      colors: ["#F0B39D", "#E7A8B2", "#D89AA7", "#F3C9B4"] as const,
-      description: "Floor-length gowns in Peach, Blush Pink, Dusty Rose, or Soft Coral",
-    },
-    gentlemen: {
-      colors: ["#B8B8B8", "#FFFFFF", "#D88C97"] as const,
-      description: "Light gray suits with white inner shirts and blush pink neckties",
-    },
-  },
-  
-  guests: {
-    image: "/Details/new-guest-attire.png",
-    imageAspect: "677/369",
-    ladies: {
-      colors: ["#FFB4A7", "#DE8189", "#F2CFBB", "#DDBC9D"] as const,
-      description: "Formal Dresses",
-    },
-    gentlemen: {
-      colors: ["#FFB4A7", "#DE8189", "#F2CFBB", "#DDBC9D"] as const,
-      description: "Formal Attire for Gentlemen",
-    },
-  },
-  guests2: {
-    image: "/Details/guest (5).png",
-    imageAspect: "677/369",
-    ladies: {
-      colors: ["#BB9F89", "#CFAEA7", "#E9CFC2", "#E5D7CE"] as const,
-      description: "Burgundy, Maroon, Dark Brown",
-    },
-    gentlemen: {
-      colors: ["#C3878C", "#ECB4BC", "#EBA7B3", "#E8B3A7"] as const,
-      description: "Burgundy, Maroon, Dark Brown",
-    },
-  },
-} as const
-
-function ColorPalette({ colors }: { colors: readonly string[] }) {
-  const widthClass = colors.length > 4 ? "max-w-md" : "max-w-xs sm:max-w-sm"
-
-  return (
-    <div
-      className={`mx-auto flex h-8 w-full overflow-hidden rounded-full border-2 border-white sm:h-9 ${widthClass}`}
-      role="img"
-      aria-label={`Color palette: ${colors.join(", ")}`}
-    >
-      {colors.map((color) => (
-        <div
-          key={color}
-          className="min-w-0 flex-1"
-          style={{ backgroundColor: color }}
-          title={color}
-        />
-      ))}
-    </div>
-  )
-}
-
-function CoupleImagesCarousel({
-  coupleImages,
-  currentImageIndex,
-  rotationOffset,
-}: {
-  coupleImages: string[]
-  currentImageIndex: number
-  rotationOffset: number
-}) {
-  return (
-    <div className="mb-4 flex justify-center gap-2 sm:mb-5 sm:gap-2.5">
-      {coupleImages.map((image, index) => {
-        const isActive = index === currentImageIndex
-        const baseRotation = index === 0 ? -5 : index === 1 ? 5 : index === 2 ? -3 : 3
-        const currentRotation = isActive
-          ? baseRotation + Math.sin((rotationOffset * Math.PI) / 180) * 2
-          : baseRotation
-        const scale = isActive ? "scale(1.1)" : "scale(1)"
-        const itemClass = `relative h-14 w-14 overflow-hidden rounded-lg border-2 shadow-md transition-all duration-700 ease-in-out sm:h-16 sm:w-16 ${isActive ? "z-10 scale-110" : "scale-100 opacity-70"}`
-        const imgClass = `object-cover transition-opacity duration-500 ${isActive ? "opacity-100" : "opacity-70"}`
-
-        return (
-          <div
-            key={image}
-            className={itemClass}
-            style={{
-              transform: `rotate(${currentRotation}deg) ${scale}`,
-              borderColor: "color-mix(in srgb, var(--color-motif-deep) 20%, transparent)",
-            }}
-          >
-            <Image
-              src={image}
-              alt={`Wedding couple ${index + 1}`}
-              fill
-              className={imgClass}
-              sizes="(max-width: 640px) 56px, 64px"
-            />
-          </div>
-        )
-      })}
-    </div>
-  )
-}
-
-function ReminderCard({
-  title,
-  children,
-  variant = "soft",
-}: {
-  title: string
-  children: ReactNode
-  variant?: "soft" | "accent"
-}) {
-  const panelStyle =
-    variant === "accent"
-      ? {
-          borderColor: "color-mix(in srgb, var(--color-motif-deep) 14%, transparent)",
-          backgroundColor: "color-mix(in srgb, var(--color-welcome-bg-soft) 85%, var(--color-motif-cream))",
-        }
-      : softPanelStyle
-
-  return (
-    <div
-      className="rounded-xl border p-4 shadow-sm sm:rounded-2xl sm:p-5"
-      style={panelStyle}
-    >
-      <h4
-        className={`${cinzel.className} ${ct.reminderHead} mb-2 font-semibold uppercase tracking-[0.08em] sm:mb-2.5`}
-        style={{ color: detailText.heading }}
-      >
-        {title}
-      </h4>
-      <div
-        className={`font-goudy-italic ${ct.reminderBody} leading-relaxed`}
-        style={{ color: detailText.body }}
-      >
-        {children}
-      </div>
-    </div>
-  )
-}
-
-function AttirePaletteGroup({
-  label,
-  colors,
-  description,
-}: {
-  label: string
-  colors: readonly string[]
-  description: string
-}) {
-  return (
-    <div className="space-y-2 sm:space-y-2.5">
-      <p
-        className={`${cinzel.className} text-center ${ct.labelSm} uppercase tracking-[0.16em] font-semibold`}
-        style={{ color: detailText.label }}
-      >
-        {label}
-      </p>
-      <ColorPalette colors={colors} />
-      <p
-        className={`font-goudy-italic ${ct.body} px-1 text-center leading-relaxed`}
-        style={{ color: detailText.body }}
-      >
-        {description}
-      </p>
-    </div>
-  )
-}
-
-function AttireCard({
-  title,
-  image,
-  alt,
-  imageAspect,
-  children,
-  imageClassName = "object-contain object-center",
-}: {
-  title: string
-  image: string
-  alt: string
-  imageAspect: string
-  children: ReactNode
-  imageClassName?: string
-}) {
-  return (
-    <div className="relative group h-full">
-      <div
-        className="absolute -inset-1 rounded-2xl opacity-0 blur-lg transition-opacity duration-500 group-hover:opacity-100"
-        style={{
-          background:
-            "linear-gradient(to bottom right, color-mix(in srgb, var(--color-welcome-green) 18%, transparent), transparent)",
-        }}
-      />
-      <div
-        className="relative flex h-full flex-col overflow-hidden rounded-xl border transition-all duration-300 sm:rounded-2xl"
-        style={cardStyle}
-      >
-        <div
-          className="border-b px-4 py-3 sm:px-5 sm:py-4"
-          style={{ borderColor: "color-mix(in srgb, var(--color-motif-deep) 10%, transparent)" }}
-        >
-          <h4
-            className={`${cinzel.className} ${ct.attireCardTitle} text-center uppercase tracking-[0.22em] font-semibold leading-tight`}
-            style={{ color: detailText.heading }}
-          >
-            {title}
-          </h4>
-        </div>
-
-        <div
-          className="relative w-full shrink-0 bg-[#FAF7F2]"
-          style={{ aspectRatio: imageAspect }}
-        >
-          <Image
-            src={image}
-            alt={alt}
-            fill
-            className={`${imageClassName} p-2 transition-transform duration-700 group-hover:scale-[1.01] sm:p-3`}
-            sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-          />
-        </div>
-
-        <div
-          className="flex flex-1 flex-col border-t px-4 py-4 sm:px-5 sm:py-5 md:px-6"
-          style={{ borderColor: "color-mix(in srgb, var(--color-motif-deep) 10%, transparent)" }}
-        >
-          {children}
-        </div>
-      </div>
-    </div>
-  )
-}
-
-type EventVenueCardProps = {
-  badge: string
-  images: string[]
-  activeImageIndex: number
-  locationName: string
-  venueAddress: string
-  venueDetail?: string
-  day: string
-  dateString: string
-  time: string
-  venueSectionLabel: string
-  mapsLink: string
-  copyId: string
-  fullVenue: string
-  copiedItems: Set<string>
-  onCopy: (text: string, id: string) => void
-  onOpenMaps: (link: string) => void
-  showDateDetails?: boolean
-}
-
-function EventVenueCard({
-  badge,
-  images,
-  activeImageIndex,
-  locationName,
-  venueAddress,
-  venueDetail,
-  day,
-  dateString,
-  time,
-  venueSectionLabel,
-  mapsLink,
-  copyId,
-  fullVenue,
-  copiedItems,
-  onCopy,
-  onOpenMaps,
-  showDateDetails = true,
-}: EventVenueCardProps) {
-  const eventDate = showDateDetails ? new Date(dateString) : null
-
-  return (
-    <div className="relative group">
-      <div
-        className="absolute -inset-1 rounded-2xl opacity-0 blur-lg transition-opacity duration-500 group-hover:opacity-100"
-        style={{
-          background:
-            "linear-gradient(to bottom right, color-mix(in srgb, var(--color-welcome-green) 15%, transparent), transparent)",
-        }}
-      />
-
-      <div
-        className="relative rounded-xl sm:rounded-2xl overflow-hidden border transition-all duration-300"
-        style={cardStyle}
-      >
-        <div className="relative w-full h-64 sm:h-72 md:h-80 lg:h-96 xl:h-[30rem] overflow-hidden">
-          {images.length === 1 ? (
-            <Image
-              src={images[0]}
-              alt={locationName}
-              fill
-              className="object-cover"
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 1280px"
-              priority
-            />
-          ) : (
-            images.map((src, index) => {
-              const isActive = index === activeImageIndex
-              return (
-                <div
-                  key={index}
-                  className={`absolute inset-0 transition-[opacity,transform] duration-[1600ms] ease-[cubic-bezier(0.45,0.05,0.55,0.95)] ${
-                    isActive
-                      ? "opacity-100 scale-100 z-10"
-                      : "opacity-0 scale-[1.06] z-0 pointer-events-none"
-                  }`}
-                >
-                  <Image
-                    src={src}
-                    alt={locationName}
-                    fill
-                    className={`object-cover transition-transform duration-[9000ms] ease-out ${
-                      isActive ? "scale-[1.08] group-hover:scale-[1.12]" : "scale-100"
-                    }`}
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 1280px"
-                    priority={index === 0}
-                  />
-                </div>
-              )
-            })
-          )}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent z-20 pointer-events-none" />
-
-          <div className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4 md:bottom-6 md:left-6 right-3 sm:right-4 md:right-6 z-30">
-            <span className={`${cinzel.className} mb-2 inline-block rounded-full border border-white/30 bg-white/20 px-3 py-1 ${sectionType.label} uppercase tracking-[0.2em] text-white backdrop-blur-sm`}>
-              {badge}
-            </span>
-            <h3 className={`${theSeasons.className} text-base sm:text-lg md:text-xl lg:text-2xl font-semibold text-white mb-1 sm:mb-1.5 drop-shadow-lg uppercase tracking-[0.12em] leading-tight`}>
-              {locationName}
-            </h3>
-            <p className={`${theSeasons.className} ${sectionType.textSnug} text-white/95 drop-shadow-md tracking-[0.06em] lg:text-lg`}>
-              {venueAddress}
-            </p>
-          </div>
-        </div>
-
-        <div className="p-3 sm:p-5 md:p-7 lg:p-9">
-          <div className="text-center mb-5 sm:mb-8 md:mb-10 space-y-2 sm:space-y-2.5 md:space-y-3">
-            {showDateDetails && eventDate && (
-              <>
-                <p
-                  className={`${cinzel.className} ${ct.label} font-semibold uppercase tracking-[0.2em]`}
-                  style={{ color: detailText.heading }}
-                >
-                  {day}
-                </p>
-
-                <p
-                  className={`${cinzel.className} ${ct.month} font-semibold leading-none`}
-                  style={{ color: detailText.heading }}
-                >
-                  {eventDate.toLocaleString("default", { month: "long" })}
-                </p>
-
-                <div className="flex items-center justify-center gap-3 sm:gap-4 md:gap-5 py-1 sm:py-2">
-                  <p
-                    className={`${cinzel.className} ${ct.dayNum} font-semibold leading-none`}
-                    style={{ color: detailText.accent }}
-                  >
-                    {eventDate.getDate()}
-                  </p>
-                  <div
-                    className="h-10 sm:h-12 md:h-14 w-[2px] rounded-full"
-                    style={{ backgroundColor: "var(--color-welcome-green)" }}
-                  />
-                  <p
-                    className={`${cinzel.className} ${ct.year} font-semibold leading-none`}
-                    style={{ color: detailText.heading }}
-                  >
-                    {eventDate.getFullYear()}
-                  </p>
-                </div>
-              </>
-            )}
-
-            <p
-              className={`${cinzel.className} text-sm sm:text-base md:text-lg lg:text-xl font-semibold tracking-[0.14em] uppercase ${showDateDetails ? "" : "py-2 sm:py-3"}`}
-              style={{ color: detailText.heading }}
-            >
-              At {time}
-            </p>
-          </div>
-
-          <div className="rounded-xl p-3 sm:p-4 md:p-5 mb-4 sm:mb-6 border" style={softPanelStyle}>
-            <div className="flex items-start gap-2 sm:gap-3 md:gap-4">
-              <MapPin className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 mt-0.5 flex-shrink-0" style={{ color: detailText.accent }} />
-              <div className="flex-1 min-w-0">
-                <p className={`${cinzel.className} ${ct.label} font-semibold mb-1.5 sm:mb-2 uppercase tracking-wide`} style={{ color: detailText.label }}>
-                  {venueSectionLabel}
-                </p>
-                <p className={`${theSeasons.className} text-sm sm:text-base md:text-lg lg:text-xl font-semibold leading-snug tracking-[0.06em] uppercase`} style={{ color: detailText.heading }}>
-                  {locationName}
-                </p>
-                {venueDetail && (
-                  <p className={`${theSeasons.className} ${ct.body} leading-relaxed mt-1 tracking-wide`} style={{ color: detailText.label }}>
-                    {venueDetail}
-                  </p>
-                )}
-                <p className={`${theSeasons.className} ${ct.body} leading-relaxed mt-1 tracking-[0.04em]`} style={{ color: detailText.body }}>
-                  {venueAddress}
-                </p>
-              </div>
-              <div className="flex flex-col items-center gap-1.5 sm:gap-2 flex-shrink-0">
-                <div
-                  className="p-1.5 sm:p-2 md:p-2.5 rounded-lg border shadow-sm"
-                  style={{
-                    backgroundColor: "var(--color-welcome-bg)",
-                    borderColor: "color-mix(in srgb, var(--color-motif-deep) 14%, transparent)",
-                  }}
-                >
-                  <QRCodeSVG
-                    value={mapsLink}
-                    size={80}
-                    level="M"
-                    includeMargin={false}
-                    fgColor={QR_FG}
-                    bgColor={QR_BG}
-                  />
-                </div>
-                <p className={`font-goudy-italic ${ct.label} text-center max-w-[90px]`} style={{ color: detailText.label }}>
-                  Scan for directions
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 md:gap-4">
-            <button
-              type="button"
-              onClick={() => onOpenMaps(mapsLink)}
-              className={`${cinzel.className} flex-1 flex items-center justify-center gap-1.5 sm:gap-2 px-4 sm:px-5 py-2.5 sm:py-3 md:py-3.5 rounded-full border font-semibold uppercase tracking-[0.12em] ${ct.btn} transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]`}
-              style={{
-                backgroundColor: "var(--color-welcome-green)",
-                borderColor: "color-mix(in srgb, var(--color-welcome-navy) 35%, transparent)",
-                color: "var(--color-welcome-bg)",
-                boxShadow:
-                  "0 6px 20px color-mix(in srgb, var(--color-welcome-green) 35%, transparent)",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = "var(--color-welcome-navy)"
-                e.currentTarget.style.borderColor = "var(--color-welcome-green)"
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = "var(--color-welcome-green)"
-                e.currentTarget.style.borderColor =
-                  "color-mix(in srgb, var(--color-welcome-navy) 35%, transparent)"
-              }}
-              aria-label={`Get directions to ${badge.toLowerCase()} venue`}
-            >
-              <Navigation className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 flex-shrink-0" />
-              <span>Get Directions</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => onCopy(fullVenue, copyId)}
-              className={`${cinzel.className} flex-1 flex items-center justify-center gap-1.5 sm:gap-2 px-4 sm:px-5 py-2.5 sm:py-3 md:py-3.5 border-2 rounded-full font-semibold uppercase tracking-[0.12em] ${ct.btn} transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]`}
-              style={{
-                color: detailText.heading,
-                backgroundColor: "var(--color-welcome-bg-soft)",
-                borderColor: "color-mix(in srgb, var(--color-motif-deep) 20%, transparent)",
-              }}
-              aria-label={`Copy ${badge.toLowerCase()} venue address`}
-            >
-              {copiedItems.has(copyId) ? (
-                <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 flex-shrink-0" style={{ color: "var(--color-welcome-green)" }} />
-              ) : (
-                <Copy className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 flex-shrink-0" />
-              )}
-              <span>{copiedItems.has(copyId) ? "Copied!" : "Copy Address"}</span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-// Colors sourced from globals.css @theme inline — edit there to update everywhere
-
-const COUPLE_IMAGES = [
-  "/gallery-design/box (1).jpg",
-  "/gallery-design/box (2).jpg",
-  "/gallery-design/box (3).jpg",
-  "/gallery-design/box (4).jpg",
-]
-
 export function Details() {
   const siteConfig = useSiteConfig()
-  const [copiedItems, setCopiedItems] = useState<Set<string>>(new Set())
-  const [currentCeremonyImageIndex, setCurrentCeremonyImageIndex] = useState(0)
-  const [currentReceptionImageIndex, setCurrentReceptionImageIndex] = useState(0)
-  const [showImageModal, setShowImageModal] = useState<string | null>(null)
-  const [currentImageIndex, setCurrentImageIndex] = useState(0)
-  const [rotationOffset, setRotationOffset] = useState(0)
+  const [copied, setCopied] = useState(false)
+  const [showMap, setShowMap] = useState(false)
 
-  const ceremonyImages = siteConfig.ceremony.image
-  const receptionImages = siteConfig.reception.image
-  const dressCodeColors = ["#FFB4A7", "#DE8189", "#F2CFBB", "#DDBC9D"]
+  const eventDate = new Date(siteConfig.reception.date)
+  const day = siteConfig.reception.day
+  const time = siteConfig.reception.time
 
   useEffect(() => {
-    if (ceremonyImages.length <= 1) return
-    const timer = setInterval(() => {
-      setCurrentCeremonyImageIndex((prev) => (prev + 1) % ceremonyImages.length)
-    }, 4500)
-    return () => clearInterval(timer)
-  }, [ceremonyImages.length])
+    if (!showMap) return
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setShowMap(false)
+    }
+    window.addEventListener("keydown", onKey)
+    return () => window.removeEventListener("keydown", onKey)
+  }, [showMap])
 
-  useEffect(() => {
-    if (receptionImages.length <= 1) return
-    const timer = setInterval(() => {
-      setCurrentReceptionImageIndex((prev) => (prev + 1) % receptionImages.length)
-    }, 4500)
-    return () => clearInterval(timer)
-  }, [receptionImages.length])
-
-  // Gentle reminders couple photos — subtle carousel + wobble animation
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentImageIndex((prev) => (prev + 1) % COUPLE_IMAGES.length)
-      setRotationOffset((prev) => (prev + 10) % 360)
-    }, 2600)
-
-    return () => clearInterval(interval)
-  }, [])
-
-  const copyToClipboard = async (text: string, itemId: string) => {
+  const copyAddress = async () => {
     try {
-      await navigator.clipboard.writeText(text)
-      setCopiedItems(prev => new Set(prev).add(itemId))
-      setTimeout(() => {
-        setCopiedItems(prev => {
-          const newSet = new Set(prev)
-          newSet.delete(itemId)
-          return newSet
-        })
-      }, 2000)
+      await navigator.clipboard.writeText(RECEPTION.fullAddress)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
     } catch (err) {
-      console.error('Failed to copy text: ', err)
+      console.error("Failed to copy address: ", err)
     }
   }
 
-  // Venue information from site config
-  const ceremonyVenueName = siteConfig.ceremony.location
-  const ceremonyVenueDetail = ""
-  const ceremonyAddress = siteConfig.ceremony.venue
-  const ceremonyVenue = `${ceremonyVenueName}, ${ceremonyAddress}`
-  const ceremonyMapsLink = siteConfig.ceremony.map
-
-  const receptionVenueName = siteConfig.reception.location
-  const receptionVenueDetail = ""
-  const receptionAddress = siteConfig.reception.venue
-  const receptionVenue = `${receptionVenueName}, ${receptionAddress}`
-  const receptionMapsLink =
-    siteConfig.reception.map ||
-    `https://maps.google.com/?q=${encodeURIComponent(receptionVenue)}`
-
-  // Aliases used in the image modal
-  const ceremonyLocationFormatted = ceremonyVenueName
-  const receptionLocationFormatted = receptionVenueName
-  const ceremonyLocation = ceremonyVenue
-  const receptionLocation = receptionVenue
-  const formattedCeremonyDate = siteConfig.ceremony.date
-  const formattedReceptionDate = siteConfig.reception.date
-
-  const openInMaps = (link: string) => {
-    window.open(link, '_blank', 'noopener,noreferrer')
+  const openInMaps = () => {
+    window.open(RECEPTION.mapsUrl, "_blank", "noopener,noreferrer")
   }
-
 
   return (
     <div
@@ -741,11 +171,10 @@ export function Details() {
     >
       <Section
         id="details"
-        className="relative z-10 pt-8 pb-8 sm:pt-10 sm:pb-10 md:pt-12 md:pb-12 lg:pt-14 lg:pb-14 overflow-hidden"
+        className="relative z-10 overflow-hidden pt-8 pb-8 sm:pt-10 sm:pb-10 md:pt-12 md:pb-12 lg:pt-14 lg:pb-14"
       >
         <SectionCornerDecorations />
 
-        {/* Header */}
         <div className="relative z-20 mx-auto mb-6 max-w-5xl px-6 text-center @container/details sm:mb-8 sm:px-10 md:mb-10 md:px-12">
           <p
             className={`${cinzel.className} ${sectionType.label} mb-2 font-semibold uppercase tracking-[0.34em] min-[400px]:tracking-[0.38em] sm:tracking-[0.44em]`}
@@ -760,7 +189,7 @@ export function Details() {
             className={`font-goudy-italic mx-auto max-w-2xl px-2 ${sectionType.textRelaxed}`}
             style={{ color: "var(--color-welcome-text)" }}
           >
-            Everything you need to know about our special day.
+            We look forward to celebrating with you at San Pablo MPC Pavilion.
           </p>
 
           <SectionIconDivider
@@ -774,442 +203,247 @@ export function Details() {
           />
         </div>
 
-      {/* Venue and Event Information */}
-      <div className="relative z-20 max-w-5xl mx-auto px-4 sm:px-6 md:px-8 mb-8 sm:mb-10 md:mb-12 space-y-6 sm:space-y-10 md:space-y-14">
-        <EventVenueCard
-          badge="Ceremony & Reception"
-          images={ceremonyImages}
-          activeImageIndex={currentCeremonyImageIndex}
-          locationName={ceremonyVenueName}
-          venueAddress={ceremonyAddress}
-          venueDetail={ceremonyVenueDetail}
-          day={siteConfig.ceremony.day}
-          dateString={siteConfig.ceremony.date}
-          time={siteConfig.ceremony.time}
-          venueSectionLabel="Ceremony & Reception"
-          mapsLink={ceremonyMapsLink}
-          copyId="ceremony"
-          fullVenue={ceremonyVenue}
-          copiedItems={copiedItems}
-          onCopy={copyToClipboard}
-          onOpenMaps={openInMaps}
-        />
+        <div className="relative z-20 mx-auto max-w-5xl px-4 sm:px-6 md:px-8">
+          <div className="relative group">
+            <div
+              className="absolute -inset-1 rounded-2xl opacity-0 blur-lg transition-opacity duration-500 group-hover:opacity-100"
+              style={{
+                background:
+                  "linear-gradient(to bottom right, color-mix(in srgb, var(--color-welcome-green) 15%, transparent), transparent)",
+              }}
+            />
 
-        {/* <EventVenueCard
-          badge="Reception"
-          images={receptionImages}
-          activeImageIndex={currentReceptionImageIndex}
-          locationName={receptionVenueName}
-          venueAddress={receptionAddress}
-          venueDetail={receptionVenueDetail}
-          day={siteConfig.reception.day}
-          dateString={siteConfig.reception.date}
-          time={siteConfig.reception.time}
-          showDateDetails={false}
-          venueSectionLabel="Reception Venue"
-          mapsLink={receptionMapsLink}
-          copyId="reception"
-          fullVenue={receptionVenue}
-          copiedItems={copiedItems}
-          onCopy={copyToClipboard}
-          onOpenMaps={openInMaps}
-        /> */}
-       
-      </div>
-
-      {/* Attire Guidelines */}
-      <div className="relative z-20 mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
-        <div className="text-center mb-8 sm:mb-10 md:mb-12">
-          <SectionIconDivider
-            icon={
-              <Shirt
-                className="h-3.5 w-3.5 sm:h-4 sm:w-4"
-                style={{ color: "var(--color-welcome-green)" }}
-                aria-hidden
-              />
-            }
-          />
-          <h3
-            className={`${theSeasons.className} ${ct.sectionTitle} mt-3 uppercase font-semibold leading-tight tracking-[0.12em] sm:mt-4 md:tracking-[0.15em]`}
-            style={{ color: "var(--color-welcome-navy)" }}
-          >
-            Attire Guidelines
-          </h3>
-          <p
-            className={`font-goudy-italic ${ct.bodyLg} mt-3 leading-relaxed sm:mt-4`}
-            style={{ color: "var(--color-welcome-text)" }}
-          >
-            Please dress according to the guidelines below.
-          </p>
-        </div>
-
-        {/* Attire cards — Bridal Party, Principal Sponsors & Guests */}
-        <div className="mb-6 grid grid-cols-1 items-start gap-6 sm:mb-8 sm:gap-8 md:mb-10 sm:grid-cols-2 lg:grid-cols-3">
-          <AttireCard
-            title="Principal Sponsors"
-            image={attireGuide.sponsors.image}
-            imageAspect={"669/373"}
-            alt="Bridal party attire guide"
-          >
-            <div className="grid grid-cols-1 gap-5 sm:gap-6">
-              <AttirePaletteGroup
-                label="Ladies"
-                colors={attireGuide.sponsors.ladies.colors}
-                description={attireGuide.sponsors.ladies.description}
-              />
-              <AttirePaletteGroup
-                label="Gentlemen"
-                colors={attireGuide.sponsors.gentlemen.colors}
-                description={attireGuide.sponsors.gentlemen.description}
-              />
-            </div>
-          </AttireCard>
-
-          <AttireCard
-            title="Entourage"
-            image={attireGuide.entourage.image}
-            imageAspect={attireGuide.entourage.imageAspect}
-            alt="Entourage attire guide"
-          >
-            <div className="grid grid-cols-1 gap-5 sm:gap-6">
-              <AttirePaletteGroup
-                label="Ladies"
-                colors={attireGuide.entourage.ladies.colors}
-                description={attireGuide.entourage.ladies.description}
-              />
-              <AttirePaletteGroup
-                label="Gentlemen"
-                colors={attireGuide.entourage.gentlemen.colors}
-                description={attireGuide.entourage.gentlemen.description}
-              />
-            </div>
-          </AttireCard>
-
-          <AttireCard
-            title="Guests"
-            image={attireGuide.guests.image}
-            imageAspect={attireGuide.guests.imageAspect}
-            alt="Guests attire guide"
-          >
-            <div className="grid grid-cols-1 gap-5 sm:gap-6">
-              <AttirePaletteGroup
-                label="Ladies"
-                colors={attireGuide.guests.ladies.colors}
-                description={attireGuide.guests.ladies.description}
-              />
-              <AttirePaletteGroup
-                label="Gentlemen"
-                colors={attireGuide.guests.gentlemen.colors}
-                description={attireGuide.guests.gentlemen.description}
-              />
-            </div>
-          </AttireCard>
-        </div>
-
-        {/* <div
-          className="mb-8 sm:mb-10 md:mb-12 p-4 sm:p-5 md:p-6 rounded-xl sm:rounded-2xl border shadow-sm"
-          style={cardStyle}
-        >
-          <p className={`${cinzel.className} ${ct.label} uppercase tracking-[0.18em] text-center mb-3 sm:mb-4 font-semibold`} style={{ color: detailText.label }}>
-            Note to Sponsors, Entourage & Guests
-          </p>
-          <ul className="space-y-2 sm:space-y-3 max-w-2xl mx-auto">
-            <li className="flex gap-3 items-start">
-              <span
-                className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full"
-                style={{ backgroundColor: "var(--color-welcome-green)" }}
-              />
-              <p className={`font-goudy-italic ${ct.body} leading-relaxed`} style={{ color: detailText.body }}>
-                Please wear comfortable footwear fit for outdoor reception.
-              </p>
-            </li>
-          </ul>
-        </div> */}
-
-        {/* Gentle Reminders */}
-        <div className="relative mx-auto mt-6 max-w-4xl px-3 sm:mt-8 sm:px-5">
-          <div
-            className="relative overflow-hidden rounded-xl border sm:rounded-2xl"
-            style={cardStyle}
-          >
-            <div className="relative z-10 px-4 py-5 text-center sm:px-6 sm:py-6">
-              <CoupleImagesCarousel
-                coupleImages={COUPLE_IMAGES}
-                currentImageIndex={currentImageIndex}
-                rotationOffset={rotationOffset}
-              />
-
-              <h3
-                className={`${cinzel.className} ${ct.sectionTitle} font-semibold tracking-[0.14em]`}
-                style={{ color: "var(--color-welcome-navy)" }}
-              >
-                Gentle Reminders
-              </h3>
-              <p
-                className={`font-goudy-italic ${ct.body} mx-auto mt-2 max-w-lg leading-relaxed`}
-                style={{ color: detailText.body }}
-              >
-                A few thoughtful notes to help everyone enjoy our celebration.
-              </p>
-
-              <div className="mx-auto mt-4 max-w-2xl space-y-3 sm:mt-5 sm:space-y-4">
-                <ReminderCard title="Adults-Only Celebration" variant="accent">
-                  <p>
-                    We kindly request that our wedding be an adults-only occasion. We hope this allows
-                    everyone to relax and fully enjoy the celebration with us.
+            <div
+              className="relative overflow-hidden rounded-xl border transition-all duration-300 sm:rounded-2xl"
+              style={cardStyle}
+            >
+              <div className="relative h-64 w-full overflow-hidden sm:h-80 md:h-[26rem] lg:h-[30rem]">
+                <Image
+                  src={RECEPTION.venueImage}
+                  alt={RECEPTION.name}
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 1280px"
+                  priority
+                />
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
+                <div className="absolute bottom-3 left-3 right-3 z-10 sm:bottom-5 sm:left-5 sm:right-5 md:bottom-7 md:left-7 md:right-7">
+                  <span
+                    className={`${cinzel.className} mb-2 inline-block rounded-full border border-white/30 bg-white/20 px-3 py-1 uppercase tracking-[0.2em] text-white backdrop-blur-sm ${sectionType.label}`}
+                  >
+                    Reception
+                  </span>
+                  <h3
+                    className={`${theSeasons.className} mb-1 text-lg font-semibold uppercase leading-tight tracking-[0.1em] text-white drop-shadow-lg sm:text-xl md:text-2xl lg:text-3xl`}
+                  >
+                    {RECEPTION.name}
+                  </h3>
+                  <p
+                    className={`${theSeasons.className} ${sectionType.textSnug} tracking-[0.06em] text-white/95 drop-shadow-md lg:text-lg`}
+                  >
+                    {RECEPTION.city}
                   </p>
-                </ReminderCard>
+                </div>
+              </div>
 
-                <ReminderCard title="Unplugged Ceremony">
-                  <p>
-                    We&apos;re having a mostly unplugged ceremony. Guests may take photos, but we kindly
-                    ask that it be kept minimal,{" "}
-                    <span
-                      className="font-semibold not-italic"
+              <div className="p-4 sm:p-6 md:p-8 lg:p-10">
+                <div className="mb-6 space-y-2 text-center sm:mb-8 md:mb-10 sm:space-y-2.5">
+                  <p
+                    className={`${cinzel.className} ${ct.label} font-semibold uppercase tracking-[0.2em]`}
+                    style={{ color: detailText.heading }}
+                  >
+                    {day}
+                  </p>
+                  <p
+                    className={`${cinzel.className} ${ct.month} font-semibold leading-none`}
+                    style={{ color: detailText.heading }}
+                  >
+                    {eventDate.toLocaleString("default", { month: "long" })}
+                  </p>
+                  <div className="flex items-center justify-center gap-3 py-1 sm:gap-4 md:gap-5 sm:py-2">
+                    <p
+                      className={`${cinzel.className} ${ct.dayNum} font-semibold leading-none`}
+                      style={{ color: detailText.accent }}
+                    >
+                      {eventDate.getDate()}
+                    </p>
+                    <div
+                      className="h-10 w-[2px] rounded-full sm:h-12 md:h-14"
+                      style={{ backgroundColor: "var(--color-welcome-green)" }}
+                    />
+                    <p
+                      className={`${cinzel.className} ${ct.year} font-semibold leading-none`}
                       style={{ color: detailText.heading }}
                     >
-                      especially for the bride&apos;s entrance
-                    </span>
-                    . Please avoid blocking or crowding our official photographers so they can capture
-                    the special moments. We&apos;d love for everyone to stay present and share the moment
-                    with us. Don&apos;t worry—professional photos will be shared with you after the event.
-                    Thank you for your understanding.
-                  </p>
-                </ReminderCard>
-
-                <ReminderCard title="Strictly Formal" variant="accent">
-                  <div className="space-y-2.5">
-                    <p>
-                      Kindly follow our suggested attire and color palette above to match our wedding
-                      theme.
+                      {eventDate.getFullYear()}
                     </p>
-                    <ColorPalette colors={dressCodeColors} />
-                    <p>Strictly no casual clothes, shoes, or white-colored attire.</p>
                   </div>
-                </ReminderCard>
-
-                <ReminderCard title="Arrival">
-                  <p>
-                    To ensure everything runs smoothly, please arrive at least 30 minutes before the
-                    ceremony starts. The program will begin at {siteConfig.ceremony.time}, so we kindly
-                    ask everyone to arrive by {siteConfig.ceremony.guestsTime}. This will give you time
-                    to find your seat, take in the beautiful setup, and be fully present for our special
-                    moment.
+                  <p
+                    className={`${cinzel.className} text-sm font-semibold uppercase tracking-[0.14em] sm:text-base md:text-lg lg:text-xl`}
+                    style={{ color: detailText.heading }}
+                  >
+                    At {time}
                   </p>
-                </ReminderCard>
+                </div>
+
+                <div className="mb-5 grid items-stretch gap-5 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-6">
+                  <button
+                    type="button"
+                    onClick={() => setShowMap(true)}
+                    className="group/map relative overflow-hidden rounded-xl border text-left transition-transform duration-300 hover:scale-[1.01] active:scale-[0.995]"
+                    style={softPanelStyle}
+                    aria-label="Open route map"
+                  >
+                    <div className="relative aspect-[4/5] w-full bg-[#E8F0E4] sm:aspect-[5/6] lg:aspect-auto lg:h-full lg:min-h-[22rem]">
+                      <Image
+                        src={RECEPTION.mapImage}
+                        alt="Route map to San Pablo Pavilion from Ayala Malls Cloverleaf"
+                        fill
+                        className="object-contain object-center"
+                        sizes="(max-width: 1024px) 100vw, 55vw"
+                      />
+                    </div>
+                    <span
+                      className={`${cinzel.className} absolute bottom-3 left-3 rounded-full border border-white/40 bg-black/45 px-3 py-1 uppercase tracking-[0.16em] text-white backdrop-blur-sm ${sectionType.label}`}
+                    >
+                      Tap to enlarge
+                    </span>
+                  </button>
+
+                  <div className="flex flex-col justify-between gap-5 rounded-xl border p-4 sm:p-5 md:p-6" style={softPanelStyle}>
+                    <div className="text-center lg:text-left">
+                      <p
+                        className={`${cinzel.className} ${ct.label} mb-2 font-semibold uppercase tracking-wide`}
+                        style={{ color: detailText.label }}
+                      >
+                        Reception Venue
+                      </p>
+                      <p
+                        className={`${theSeasons.className} text-base font-semibold uppercase leading-snug tracking-[0.06em] sm:text-lg md:text-xl`}
+                        style={{ color: detailText.heading }}
+                      >
+                        {RECEPTION.name}
+                      </p>
+                      <p
+                        className={`${theSeasons.className} ${ct.body} mt-1 tracking-[0.04em]`}
+                        style={{ color: detailText.body }}
+                      >
+                        {RECEPTION.city}
+                      </p>
+                    </div>
+
+                    <div className="flex flex-col items-center gap-2">
+                      <div
+                        className="rounded-lg border p-2 shadow-sm sm:p-2.5"
+                        style={{
+                          backgroundColor: "var(--color-welcome-bg)",
+                          borderColor: "color-mix(in srgb, var(--color-motif-deep) 14%, transparent)",
+                        }}
+                      >
+                        <QRCodeSVG
+                          value={RECEPTION.mapsUrl}
+                          size={128}
+                          level="M"
+                          includeMargin={false}
+                          fgColor={QR_FG}
+                          bgColor={QR_BG}
+                        />
+                      </div>
+                      <p
+                        className={`font-goudy-italic ${ct.label} text-center`}
+                        style={{ color: detailText.label }}
+                      >
+                        Scan for directions
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex flex-col gap-2 sm:flex-row sm:gap-3 md:gap-4">
+                  <button
+                    type="button"
+                    onClick={openInMaps}
+                    className={`${cinzel.className} ${ct.btn} flex flex-1 items-center justify-center gap-1.5 rounded-full border px-4 py-2.5 font-semibold uppercase tracking-[0.12em] transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] sm:gap-2 sm:px-5 sm:py-3 md:py-3.5`}
+                    style={{
+                      backgroundColor: "var(--color-welcome-green)",
+                      borderColor: "color-mix(in srgb, var(--color-welcome-navy) 35%, transparent)",
+                      color: "var(--color-welcome-bg)",
+                      boxShadow:
+                        "0 6px 20px color-mix(in srgb, var(--color-welcome-green) 35%, transparent)",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = "var(--color-welcome-navy)"
+                      e.currentTarget.style.borderColor = "var(--color-welcome-green)"
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = "var(--color-welcome-green)"
+                      e.currentTarget.style.borderColor =
+                        "color-mix(in srgb, var(--color-welcome-navy) 35%, transparent)"
+                    }}
+                    aria-label="Get directions to the reception venue"
+                  >
+                    <Navigation className="h-3.5 w-3.5 shrink-0 sm:h-4 sm:w-4 md:h-5 md:w-5" />
+                    <span>Get Directions</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={copyAddress}
+                    className={`${cinzel.className} ${ct.btn} flex flex-1 items-center justify-center gap-1.5 rounded-full border-2 px-4 py-2.5 font-semibold uppercase tracking-[0.12em] transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] sm:gap-2 sm:px-5 sm:py-3 md:py-3.5`}
+                    style={{
+                      color: detailText.heading,
+                      backgroundColor: "var(--color-welcome-bg-soft)",
+                      borderColor: "color-mix(in srgb, var(--color-motif-deep) 20%, transparent)",
+                    }}
+                    aria-label="Copy reception venue address"
+                  >
+                    {copied ? (
+                      <Check
+                        className="h-3.5 w-3.5 shrink-0 sm:h-4 sm:w-4 md:h-5 md:w-5"
+                        style={{ color: "var(--color-welcome-green)" }}
+                      />
+                    ) : (
+                      <Copy className="h-3.5 w-3.5 shrink-0 sm:h-4 sm:w-4 md:h-5 md:w-5" />
+                    )}
+                    <span>{copied ? "Copied!" : "Copy Address"}</span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      {/* Enhanced Image Modal */}
-      {showImageModal && (
+      </Section>
+
+      {showMap && (
         <div
-          className="fixed inset-0 backdrop-blur-xl z-50 flex items-center justify-center p-2 sm:p-4 md:p-6 animate-in fade-in duration-500"
-          onClick={() => setShowImageModal(null)}
-          style={{ backgroundColor: "rgba(91,102,85,0.96)" }}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-3 backdrop-blur-sm sm:p-6"
+          onClick={() => setShowMap(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Route map"
         >
-          {/* Decorative background elements */}
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div
-              className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-3xl animate-pulse"
-              style={{ backgroundColor: "var(--color-motif-cream)", opacity: 0.12 }}
-            />
-            <div
-              className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full blur-3xl animate-pulse"
-              style={{ backgroundColor: "var(--color-motif-cream)", opacity: 0.14, animationDelay: "1s" }}
-            />
-          </div>
-
-          <div
-            className="relative max-w-6xl w-full max-h-[95vh] sm:max-h-[90vh] bg-motif-deep rounded-3xl overflow-hidden shadow-2xl border-2 animate-in zoom-in-95 duration-500 group"
-            onClick={(e) => e.stopPropagation()}
-            style={{ borderColor: "var(--color-motif-cream)" }}
+          <button
+            type="button"
+            onClick={() => setShowMap(false)}
+            className="absolute right-4 top-4 rounded-full border border-white/30 bg-black/40 p-2 text-white transition hover:bg-black/60 sm:right-6 sm:top-6"
+            aria-label="Close map"
           >
-            {/* Decorative top accent */}
-            <div
-              className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r"
-              style={{ background: "linear-gradient(to right, var(--color-motif-cream), var(--color-motif-cream), var(--color-motif-deep))" }}
+            <X className="h-5 w-5" />
+          </button>
+          <div
+            className="relative max-h-[92vh] w-full max-w-3xl overflow-hidden rounded-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Image
+              src={RECEPTION.mapImage}
+              alt="Route map to San Pablo Pavilion from Ayala Malls Cloverleaf"
+              width={1200}
+              height={1500}
+              className="h-auto max-h-[92vh] w-full object-contain"
+              priority
             />
-
-            {/* Enhanced close button */}
-            <button
-              onClick={() => setShowImageModal(null)}
-              className="absolute top-4 right-4 sm:top-5 sm:right-5 md:top-6 md:right-6 z-20 hover:bg-motif-accent backdrop-blur-sm p-2.5 sm:p-3 rounded-xl shadow-xl transition-all duration-300 hover:scale-110 hover:shadow-2xl active:scale-95 border-2 group/close"
-              title="Close (ESC)"
-              style={{ backgroundColor: "var(--color-motif-deep)", borderColor: "var(--color-motif-cream)", color: "var(--color-motif-cream)" }}
-            >
-              <X className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 group-hover/close:text-[#E1D5C7] transition-colors" />
-            </button>
-
-            {/* Venue badge */}
-            <div className="absolute top-4 left-4 sm:top-5 sm:left-5 md:top-6 md:left-6 z-20">
-              <div
-                className="flex items-center gap-2 backdrop-blur-md px-4 py-2 rounded-full shadow-xl border-2"
-                style={{ backgroundColor: "var(--color-motif-deep)", borderColor: "var(--color-motif-cream)" }}
-              >
-                {showImageModal === "ceremony" ? (
-                  <>
-                    <Heart className="w-4 h-4" fill="var(--color-motif-cream)" style={{ color: "var(--color-motif-cream)" }} />
-                    <span className="text-xs sm:text-sm font-bold text-motif-cream">
-                      Ceremony Venue
-                    </span>
-                  </>
-                ) : (
-                  <>
-                    <Utensils className="w-4 h-4 text-motif-cream" />
-                    <span className="text-xs sm:text-sm font-bold text-motif-cream">
-                      Reception Venue
-                    </span>
-                  </>
-                )}
-              </div>
-            </div>
-
-            {/* Image section with enhanced effects */}
-            <div
-              className="relative w-full h-[50vh] sm:h-[60vh] md:h-[70vh] overflow-hidden"
-              style={{ backgroundColor: "var(--color-motif-deep)" }}
-            >
-              {/* Shimmer effect */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 animate-shimmer opacity-0 group-hover:opacity-100 transition-opacity duration-1000 z-0" />
-
-              <Image
-                src={
-                  showImageModal === "ceremony"
-                    ? ceremonyImages[currentCeremonyImageIndex] ?? ceremonyImages[0]
-                    : receptionImages[currentReceptionImageIndex] ?? receptionImages[0]
-                }
-                alt={showImageModal === "ceremony" ? ceremonyLocationFormatted : receptionLocationFormatted}
-                fill
-                className="object-contain p-6 sm:p-8 md:p-10 transition-transform duration-700 group-hover:scale-105 z-10"
-                sizes="95vw"
-                priority
-              />
-            </div>
-
-            {/* Enhanced content section */}
-            <div
-              className="relative border-t-2 p-5 sm:p-6 md:p-8 bg-motif-deep backdrop-blur-sm"
-              style={{ borderColor: "var(--color-motif-cream)" }}
-            >
-              {/* Decorative line */}
-              <div className="absolute top-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-motif-cream/30 to-transparent" />
-
-              <div className="space-y-5">
-                {/* Header with venue info */}
-                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-                  <div className="space-y-2">
-                    <h3
-                      className={`${cinzel.className} text-xl sm:text-2xl md:text-3xl font-bold flex items-center gap-3`}
-                      style={{ color: "var(--color-motif-cream)" }}
-                    >
-                      {showImageModal === "ceremony" ? (
-                        <Heart className="w-6 h-6 text-motif-cream" fill="var(--color-motif-cream)" />
-                      ) : (
-                        <Utensils className="w-6 h-6 text-motif-cream" />
-                      )}
-                      {showImageModal === "ceremony" ? siteConfig.ceremony.venue : siteConfig.reception.venue}
-                    </h3>
-                    <div className="flex items-center gap-2 text-sm opacity-70 text-motif-cream">
-                      <MapPin className="w-4 h-4 text-motif-cream" />
-                      <span>
-                        {showImageModal === "ceremony"
-                          ? ceremonyLocationFormatted
-                          : receptionLocationFormatted}
-                      </span>
-                    </div>
-
-                    {/* Date & Time info */}
-                    {showImageModal === "ceremony" && (
-                      <div
-                        className="flex items-center gap-2 text-sm font-medium px-3 py-2 rounded-lg border"
-                        style={{
-                          color: "var(--color-motif-cream)",
-                          backgroundColor: "var(--color-motif-deep)",
-                          opacity: 0.9,
-                          borderColor: "var(--color-motif-cream)",
-                        }}
-                      >
-                        <Clock className="w-4 h-4 text-motif-cream shrink-0" />
-                        <span>
-                          {formattedCeremonyDate} at {siteConfig.ceremony.time}
-                        </span>
-                      </div>
-                    )}
-                    {showImageModal === "reception" && (
-                      <div
-                        className="flex items-center gap-2 text-sm font-medium px-3 py-2 rounded-lg border"
-                        style={{
-                          color: "var(--color-motif-cream)",
-                          backgroundColor: "var(--color-motif-deep)",
-                          opacity: 0.9,
-                          borderColor: "var(--color-motif-cream)",
-                        }}
-                      >
-                        <Clock className="w-4 h-4 text-motif-cream" />
-                        <span>
-                          {formattedReceptionDate} - {siteConfig.reception.time}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Action buttons */}
-                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
-                    <button
-                      onClick={() =>
-                        copyToClipboard(
-                          showImageModal === "ceremony"
-                            ? ceremonyLocation
-                            : receptionLocation,
-                          `modal-${showImageModal}`,
-                        )
-                      }
-                      className="flex items-center justify-center gap-2 px-4 py-2.5 sm:px-5 sm:py-3 bg-motif-deep border-2 rounded-xl font-semibold text-sm transition-all duration-300 hover:scale-105 hover:shadow-lg active:scale-95 shadow-md hover:bg-motif-accent whitespace-nowrap text-motif-cream"
-                      title="Copy address"
-                      style={{ borderColor: "var(--color-motif-cream)" }}
-                    >
-                      {copiedItems.has(`modal-${showImageModal}`) ? (
-                        <>
-                          <Check className="w-4 h-4" />
-                          <span>Copied!</span>
-                        </>
-                      ) : (
-                        <>
-                          <Copy className="w-4 h-4" />
-                          <span>Copy Address</span>
-                        </>
-                      )}
-                    </button>
-
-                    <button
-                      onClick={() =>
-                        openInMaps(showImageModal === "ceremony" ? ceremonyMapsLink : receptionMapsLink)
-                      }
-                      className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-semibold text-sm transition-all duration-300 hover:scale-105 hover:shadow-xl active:scale-95 shadow-lg whitespace-nowrap bg-motif-cream text-motif-deep"
-                    >
-                      <Navigation className="w-4 h-4 sm:w-5 sm:h-5" />
-                      <span>Get Directions</span>
-                    </button>
-                  </div>
-                </div>
-
-                {/* Additional info */}
-                  <div className="flex items-center gap-2 text-xs opacity-65 text-motif-cream">
-                  <span className="flex items-center gap-1.5">
-                    <Camera className="w-3 h-3" />
-                    Click outside to close
-                  </span>
-                  <span className="hidden sm:inline">•</span>
-                  <span className="hidden sm:inline-flex items-center gap-1.5">Press ESC to close</span>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       )}
-      </Section>
     </div>
   )
 }

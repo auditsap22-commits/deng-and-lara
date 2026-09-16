@@ -98,16 +98,16 @@ export default function Home() {
               <VideoMessage />
               <Messages />
               {/* <OurCelebration /> */}
-              {/* <Details /> */}
+              <Details />
               {/* <Accommodation /> */}
               {/* <GuestInformation /> */}
               {/* <WeddingTimeline /> */}
-              {/* <Entourage /> */}
+              <Entourage />
               <GuestList />
               {/* <BookOfGuests /> */}
               {/* <PrincipalSponsors /> */}
               <WeddingPlaylist />
-              {/* <FAQ /> */}
+              <FAQ />
               {/* <Registry /> */}
               {/* <SnapShare /> */}
 

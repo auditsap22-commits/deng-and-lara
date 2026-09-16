@@ -1,9 +1,7 @@
 "use client"
 
-import React from "react"
-import { useState, useEffect, useMemo, useRef } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import localFont from "next/font/local"
-import { entourage as staticEntourage, principalSponsors as staticSponsors } from "@/content/site"
 import { useSiteConfig } from "@/hooks/use-site-config"
 import { SectionCornerDecorations } from "@/components/section-corner-decorations"
 import { layeredSectionTitleSize, sectionType } from "@/lib/section-typography"
@@ -53,8 +51,167 @@ const palette = {
 } as const
 
 const nameStyle: React.CSSProperties = {
-  fontSize: "clamp(0.75rem, min(2.55vw, 9cqi), 1.125rem)",
-  lineHeight: 1.3,
+  fontSize: "clamp(0.92rem, min(2.8vw, 3.4cqi), 1.2rem)",
+  lineHeight: 1.4,
+}
+
+const featuredNameStyle: React.CSSProperties = {
+  fontSize: "clamp(1.02rem, min(3.1vw, 3.8cqi), 1.32rem)",
+  lineHeight: 1.35,
+}
+
+const ct = {
+  label: sectionType.label,
+  chapter: `${sectionType.label} lg:text-base`,
+  role: "text-[11px] sm:text-xs md:text-sm",
+  blurb: "text-[0.8rem] sm:text-[0.875rem] md:text-[0.9375rem] leading-[1.65] sm:leading-[1.7]",
+} as const
+
+type Couple = readonly [string, string]
+
+const PARENTS: Couple[] = [
+  ["Dr. Nollie Lara (+)", "Dra. Joy Lara"],
+  ["Mr. Manuel Lopez (+)", "Tootsie Lopez(+)"],
+]
+
+const PRINCIPAL_INTRO =
+  "To stand as our primary witnesses, representing the spiritual foundation, guidance, and continuous intercession that sustain our domestic church."
+
+const ORIGINAL_SPONSORS = {
+  title: "Original Principal Sponsors",
+  description:
+    "With deepest gratitude for the guidance and love that have brought us to this 25-year milestone, and for continuing to journey with us.",
+  couples: [
+    ["Mr. Ben Gamez", "Mrs. Tita Gamez"],
+    ["Mr. Steve Basilla", "Mrs. Connie Basilla"],
+    ["Mr. Danny Lopez", "Mrs. Dina Lopez"],
+    ["Mr. Peter Tan", "Mrs. Nida Tan"],
+    ["Mr. Jo Tecson", "Mrs. Flora Tecson"],
+    ["Engr. Dodie Tecson (+)", "Mrs. Jojie Tecson"],
+  ] as Couple[],
+}
+
+const MILESTONE_SPONSORS = {
+  title: "Milestone Principal Sponsors",
+  description:
+    "To witness our 25-year covenant: anchoring our domestic church with the same spiritual foundation, love, and guidance that brought us from our wedding day to this silver milestone.",
+  couples: [
+    ["Mr. Orly Araujo", "Mrs. Gina Araujo"],
+    ["Mr. Rene Marcos", "Mrs. Amor Marcos"],
+    ["Mr. Noel Griño", "Mrs. Deanna Griño"],
+    ["Atty. Arnel Santos", "Atty. Bing Santos"],
+    ["Engr. Demi Aquino", "Mrs. Jean Aquino"],
+    ["Dr. Edilberto Cavaneyro", "Mrs. Lucita Cavaneyro"],
+  ] as Couple[],
+}
+
+const BEST_MAN = {
+  title: "Best Man",
+  description:
+    "Our very responsible beloved son, standing to honor our twenty-five year journey: a lifelong confidant who has walked alongside us, enriched our marriage, and guarded our love through every season.",
+  name: "Emanuel DenGabriel L. Lara",
+}
+
+const MAIDS_OF_HONOR = {
+  title: "Maids of Honor",
+  description:
+    "Our dear cousins, standing as joyful witnesses to celebrate twenty-five years of shared faith, deep devotion, and continuous family love.",
+  names: ["Dra. Christine Corina Grace L. Basilla", "Ms. Fe Alexandra T. Lopez"],
+}
+
+const GROOMSMEN_BRIDESMAIDS = {
+  description:
+    "To stand beside us in our silver year, symbolizing a quarter-century of shared joys, steadfast friendship, and unwavering support on our journey.",
+  couples: [
+    ["Dr. Ding Regino", "Dra. Maricel Regino"],
+    ["Mr. Bong Tolentino", "Mrs. Ritchie Tolentino"],
+    ["Mr. Raffy Geraldez", "Mrs. Judith Geraldez"],
+    ["Mr. Matt Barba", "Mrs. Hazel Barba"],
+  ] as Couple[],
+}
+
+const SECONDARY_SPONSORS = [
+  {
+    title: "Candle Sponsors",
+    description:
+      "To light the candle, symbolizing Christ's continued presence and light in our marriage.",
+    couple: ["Dr. Thomas Suarez", "Engr. Emi Paraguas"] as Couple,
+  },
+  {
+    title: "Veil Sponsors",
+    description:
+      "To clothe us in the mantle of grace that has sheltered, protected, and blessed our marriage for twenty-five years.",
+    couple: ["Mr. Derrick Lara", "Mrs. Kathleen Lara"] as Couple,
+  },
+  {
+    title: "Cord Sponsors",
+    description:
+      "To encircle us in the symbol of infinity, celebrating the unbreakable bond and lifelong unity that has held us together for twenty-five years.",
+    couple: ["Mr. Darren Lara", "Dr. Cherrie Rose Lara"] as Couple,
+  },
+]
+
+const JUNIOR_ATTENDANTS = [
+  {
+    title: "Junior Groomsman",
+    description:
+      "Our amazing nephew. He missed the original wedding by a couple of decades, but he’s here now to take notes on how to survive 25 years of marriage.",
+    name: "Dominic Miguel P. Lara",
+  },
+  {
+    title: "Junior Bridesmaid",
+    description:
+      "Walking gracefully ahead, she symbolizes the youthful joy and bright future of the family's next generation.",
+    name: "Claire Isabel P. Lara",
+  },
+  {
+    title: "Bible Bearer",
+    description:
+      "Our beloved nephew and godson, bringing forward the Holy Word to represent the spiritual foundation that has guided our family for a quarter-century.",
+    name: "Juancho Rafael B. Camara",
+  },
+  {
+    title: "Ring Bearer",
+    description:
+      "Our super adorable youngest son, carrying the sacred tokens of our enduring love to symbolize twenty-five years of an unbroken and blessed covenant.",
+    name: "Imanuel Yoshua L. Lara",
+  },
+]
+
+function Ampersand({ className = "" }: { className?: string }) {
+  return (
+    <span
+      className={`${aboveTheBeyond.className} inline-block shrink-0 px-0.5 leading-none ${className}`}
+      style={{
+        fontSize: "1.15em",
+        color: palette.accent,
+        verticalAlign: "middle",
+      }}
+      aria-hidden
+    >
+      &
+    </span>
+  )
+}
+
+function OrnamentDot() {
+  return (
+    <span
+      className="h-1 w-1 shrink-0 rounded-full sm:h-1.5 sm:w-1.5"
+      style={{ background: "color-mix(in srgb, var(--color-welcome-green) 70%, transparent)" }}
+      aria-hidden
+    />
+  )
+}
+
+function OrnamentalDivider({ className = "" }: { className?: string }) {
+  return (
+    <div className={`flex items-center justify-center gap-2 ${className}`} aria-hidden>
+      <span className="h-px w-10 sm:w-16 md:w-24" style={dividerLineStyle} />
+      <OrnamentDot />
+      <span className="h-px w-10 sm:w-16 md:w-24" style={dividerLineStyle} />
+    </div>
+  )
 }
 
 function EntourageCoupleLabel({ groom, bride }: { groom: string; bride: string }) {
@@ -71,17 +228,7 @@ function EntourageCoupleLabel({ groom, bride }: { groom: string; bride: string }
         style={{ color: "var(--color-welcome-navy)" }}
       >
         With {groom}
-        <span
-          className={`${aboveTheBeyond.className} mx-1.5 inline-block normal-case tracking-normal sm:mx-2`}
-          style={{
-            fontSize: "1.35em",
-            color: "var(--color-welcome-green)",
-            verticalAlign: "middle",
-          }}
-          aria-hidden
-        >
-          &
-        </span>
+        <Ampersand className="mx-1.5 sm:mx-2" />
         {bride}
       </p>
       <span
@@ -115,7 +262,7 @@ function EntourageTitle() {
           color: "var(--color-welcome-navy)",
         }}
       >
-        Wedding Entourage
+        Entourage
       </span>
       <span
         aria-hidden
@@ -128,207 +275,137 @@ function EntourageTitle() {
             "0 1px 0 color-mix(in srgb, var(--color-welcome-bg) 95%, white), 0 0 10px color-mix(in srgb, var(--color-welcome-bg) 65%, white)",
         }}
       >
-        standing with us
+        our silver year
       </span>
-      <span className="sr-only">standing with us</span>
+      <span className="sr-only">our silver year</span>
     </h2>
   )
 }
 
-interface EntourageMember {
-  name: string
-  roleCategory: string
-  roleTitle: string
-  email: string
+function ChapterHeading({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="mb-5 text-center sm:mb-6 md:mb-7">
+      <h3
+        className={`${cinzel.className} ${ct.chapter} font-semibold uppercase leading-tight tracking-[0.18em] sm:tracking-[0.22em] md:tracking-[0.26em]`}
+        style={{ color: palette.heading }}
+      >
+        {children}
+      </h3>
+      <OrnamentalDivider className="mt-2.5 sm:mt-3" />
+    </div>
+  )
 }
 
-interface PrincipalSponsor {
-  malePrincipalSponsor: string
-  femalePrincipalSponsor: string
+function RoleTitle({ children }: { children: React.ReactNode }) {
+  return (
+    <h4
+      className={`${cinzel.className} ${ct.role} font-semibold uppercase tracking-[0.16em] sm:tracking-[0.2em]`}
+      style={{ color: palette.label }}
+    >
+      {children}
+    </h4>
+  )
 }
 
-/** Accepts PascalCase from API / Sheets or camelCase */
-function entourageMemberFromApi(row: Record<string, unknown>): EntourageMember {
-  const r = row as Record<string, string | undefined>
-  return {
-    name: r.name ?? r.Name ?? "",
-    roleCategory: r.roleCategory ?? r.RoleCategory ?? "",
-    roleTitle: r.roleTitle ?? r.RoleTitle ?? "",
-    email: r.email ?? r.Email ?? "",
-  }
+function Blurb({ children }: { children: React.ReactNode }) {
+  return (
+    <p
+      className={`font-goudy-italic mx-auto mt-2 max-w-xl text-pretty text-center ${ct.blurb}`}
+      style={{ color: palette.body }}
+    >
+      {children}
+    </p>
+  )
 }
 
-function principalSponsorFromApi(row: Record<string, unknown>): PrincipalSponsor {
-  const r = row as Record<string, string | undefined>
-  return {
-    malePrincipalSponsor: r.malePrincipalSponsor ?? r.MalePrincipalSponsor ?? "",
-    femalePrincipalSponsor: r.femalePrincipalSponsor ?? r.FemalePrincipalSponsor ?? "",
-  }
+function PersonName({
+  children,
+  featured = false,
+}: {
+  children: React.ReactNode
+  featured?: boolean
+}) {
+  return (
+    <p
+      className="font-goudy-italic text-pretty font-medium"
+      style={{ ...(featured ? featuredNameStyle : nameStyle), color: palette.heading }}
+    >
+      {children}
+    </p>
+  )
 }
 
-const ct = {
-  label: sectionType.label,
-  sectionTitle: `${sectionType.label} lg:text-base`,
-  role: "text-[11px] sm:text-xs md:text-sm",
-  body: sectionType.text,
-  bodyLg: sectionType.subheader,
-} as const
-
-function mapStaticEntourage(): EntourageMember[] {
-  const roleToCategory: Record<string, string> = {
-    "Best Man": "Best Man",
-    "Matron of Honor": "Matron of Honor",
-    "Maid of Honor": "Maid of Honor",
-    "Bridesmaid": "Bridesmaids",
-    "Groomsman": "Groomsmen",
-    "Father": "Parents of the Bride",
-    "Mother": "Parents of the Bride",
-    "Brother": "Parents of the Groom",
-    "Flower Girl": "Flower Girls",
-    "Little Bride": "Little Bride",
-    "Little Groom": "Little Groom",
-    "Ring Bearer": "Ring Bearer",
-    "Coin Bearer": "Coin Bearer",
-    "Bible Bearer": "Bible Bearer",
-  }
-  return staticEntourage.map(({ role, name, group }) => {
-    let category = roleToCategory[role] ?? (role.endsWith("s") ? role : role + "s")
-    if (group === "kate-family") category = "Parents of the Bride"
-    if (group === "christian-family") category = "Parents of the Groom"
-    if (group === "candle") category = "Candle Sponsors"
-    if (group === "cord") category = "Cord Sponsors"
-    return { name, roleTitle: role, roleCategory: category, email: "" }
-  })
+function CoupleName({ couple, featured = false }: { couple: Couple; featured?: boolean }) {
+  const [left, right] = couple
+  return (
+    <p
+      className="font-goudy-italic flex flex-wrap items-center justify-center gap-x-1.5 gap-y-0.5 text-pretty font-medium sm:gap-x-2"
+      style={{ ...(featured ? featuredNameStyle : nameStyle), color: palette.heading }}
+    >
+      <span>{left}</span>
+      <Ampersand />
+      <span>{right}</span>
+    </p>
+  )
 }
 
-function mapStaticSponsors(): PrincipalSponsor[] {
-  return staticSponsors
-    .filter((s) => s.name || s.spouse)
-    .map(({ name, spouse }) => ({
-      malePrincipalSponsor: name || "",
-      femalePrincipalSponsor: spouse || "",
-    }))
+function CoupleList({ couples }: { couples: Couple[] }) {
+  return (
+    <ul className="mt-4 flex flex-col items-center gap-2 sm:mt-5 sm:gap-2.5">
+      {couples.map(([left, right]) => (
+        <li key={`${left}-${right}`}>
+          <CoupleName couple={[left, right]} />
+        </li>
+      ))}
+    </ul>
+  )
 }
 
-const ROLE_CATEGORY_ORDER = [
-  "OFFICIATING MINISTER",
-  "The Couple",
-  "Parents of the Groom",
-  "Parents of the Bride",
-  "Family of the Groom",
-  "Family of the Bride",
-  "Man of Honor",
-  "Matron of Honor",
-  "Best Man",
-  "Maid of Honor",
-  "Groomsmen",
-  "Bridesmaids",
-  "Candle Sponsors",
-  "Veil Sponsors",
-  "Cord Sponsors",
-  "Ribbon Sponsors",
-  "Little Groom",
-  "Little Bride",
-  "Ring Bearer",
-  "Bible Bearer",
-  "Coin Bearer",
-  "Flower Girls",
-]
+function RoleBlock({
+  title,
+  description,
+  children,
+}: {
+  title: string
+  description?: string
+  children: React.ReactNode
+}) {
+  return (
+    <div className="text-center">
+      <RoleTitle>{title}</RoleTitle>
+      {description ? <Blurb>{description}</Blurb> : null}
+      <div className="mt-3 sm:mt-3.5">{children}</div>
+    </div>
+  )
+}
 
-const HONOR_ATTENDANT_BLOCK_CATEGORIES = [
-  "Man of Honor",
-  "Matron of Honor",
-  "Best Man",
-  "Maid of Honor",
-] as const
+function ProgramPanel({ children }: { children: React.ReactNode }) {
+  return (
+    <div
+      className="h-full rounded-xl border px-4 py-6 sm:px-5 sm:py-7 md:px-6 md:py-8"
+      style={{
+        borderColor: "color-mix(in srgb, var(--color-motif-deep) 12%, transparent)",
+        background: "color-mix(in srgb, white 38%, transparent)",
+      }}
+    >
+      {children}
+    </div>
+  )
+}
 
-const HIDDEN_ROLE_CATEGORIES = new Set<string>([])
-
-function normalizeRoleCategory(category: string): string {
-  const normalized = category.trim()
-  if (normalized.toLowerCase() === "officiating minister") {
-    return "OFFICIATING MINISTER"
-  }
-  const honorAliases: Record<string, string> = {
-    "man of honor": "Man of Honor",
-    "best man": "Best Man",
-    "maid of honor": "Maid of Honor",
-    "matron of honor": "Matron of Honor",
-  }
-  const alias = honorAliases[normalized.toLowerCase()]
-  if (alias) return alias
-  if (normalized.toLowerCase() === "peer sponsors") {
-    return "Peer Sponsors"
-  }
-  return normalized
+function ChapterRule() {
+  return (
+    <div className="flex justify-center py-7 sm:py-8 md:py-10" aria-hidden>
+      <span className="h-px w-full max-w-xs sm:max-w-sm" style={dividerLineStyle} />
+    </div>
+  )
 }
 
 export function Entourage() {
   const siteConfig = useSiteConfig()
-  const [entourage, setEntourage] = useState<EntourageMember[]>([])
-  const [sponsors, setSponsors] = useState<PrincipalSponsor[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
   const [isVisible, setIsVisible] = useState(false)
   const sectionRef = useRef<HTMLDivElement>(null)
 
-  const fetchEntourage = async () => {
-    setIsLoading(true)
-    setError(null)
-    try {
-      const response = await fetch("/api/entourage", { cache: "no-store" })
-      if (!response.ok) throw new Error("Failed to fetch entourage")
-      const data: unknown = await response.json()
-      const list =
-        Array.isArray(data) && data.length > 0
-          ? data.map((row) => entourageMemberFromApi(row as Record<string, unknown>))
-          : mapStaticEntourage()
-      setEntourage(list)
-    } catch (err: unknown) {
-      console.error("Failed to load entourage:", err)
-      setEntourage(mapStaticEntourage())
-      setError(null)
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  const fetchSponsors = async () => {
-    try {
-      const res = await fetch("/api/principal-sponsor", { cache: "no-store" })
-      if (!res.ok) throw new Error("Failed to load principal sponsors")
-      const data: unknown = await res.json()
-      const list =
-        Array.isArray(data) && data.length > 0
-          ? data.map((row) => principalSponsorFromApi(row as Record<string, unknown>)).filter((s) => s.malePrincipalSponsor || s.femalePrincipalSponsor)
-          : mapStaticSponsors()
-      setSponsors(list)
-    } catch (e: unknown) {
-      console.error("Failed to load sponsors:", e)
-      setSponsors(mapStaticSponsors())
-    }
-  }
-
-  useEffect(() => {
-    fetchEntourage()
-    fetchSponsors()
-
-    // Set up auto-refresh listener for dashboard updates
-    const handleEntourageUpdate = () => {
-      setTimeout(() => {
-        fetchEntourage()
-        fetchSponsors()
-      }, 1000)
-    }
-
-    window.addEventListener("entourageUpdated", handleEntourageUpdate)
-
-    return () => {
-      window.removeEventListener("entourageUpdated", handleEntourageUpdate)
-    }
-  }, [])
-
-  // Intersection Observer for scroll animations
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -336,149 +413,16 @@ export function Entourage() {
           setIsVisible(true)
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.08 }
     )
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
-    }
+    const node = sectionRef.current
+    if (node) observer.observe(node)
 
     return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current)
-      }
+      if (node) observer.unobserve(node)
     }
   }, [])
-
-  // Group entourage by role category
-  const grouped = useMemo(() => {
-    const grouped: Record<string, EntourageMember[]> = {}
-    
-    entourage.forEach((member) => {
-      const category = normalizeRoleCategory(member.roleCategory)
-
-      // Skip members without a category or in "Other"
-      if (!category || category === "Other") {
-        return
-      }
-      if (!grouped[category]) {
-        grouped[category] = []
-      }
-      grouped[category].push(member)
-    })
-    
-    return grouped
-  }, [entourage])
-
-  const hasParents =
-    (grouped["Parents of the Groom"]?.length ?? 0) > 0 || (grouped["Parents of the Bride"]?.length ?? 0) > 0
-
-  // Helper component for elegant section titles (category labels)
-  const SectionTitle = ({
-    children,
-    align = "center",
-    className = "",
-  }: {
-    children: React.ReactNode
-    align?: "left" | "center" | "right"
-    className?: string
-  }) => {
-    const textAlign =
-      align === "right" ? "text-right" : align === "left" ? "text-left" : "text-center"
-    return (
-      <h3
-        className={`relative ${cinzel.className} ${ct.sectionTitle} tracking-[0.1em] sm:tracking-[0.14em] md:tracking-[0.16em] uppercase mb-1.5 sm:mb-2 md:mb-2.5 ${textAlign} ${className} transition-all duration-300 whitespace-nowrap font-semibold leading-tight`}
-        style={{ color: palette.heading }}
-      >
-        {children}
-      </h3>
-    )
-  }
-
-  // Helper component for name items with role title (supports alignment)
-  const NameItem = ({
-    member,
-    align = "center",
-    showRole = true,
-  }: {
-    member: EntourageMember
-    align?: "left" | "center" | "right"
-    showRole?: boolean
-  }) => {
-    const containerAlign =
-      align === "right" ? "items-end" : align === "left" ? "items-start" : "items-center"
-    const textAlign =
-      align === "right" ? "text-right" : align === "left" ? "text-left" : "text-center"
-    const displayName = member.name.trim()
-    return (
-      <div
-        className={`relative flex flex-col ${containerAlign} justify-center py-0.5 sm:py-1 min-w-0 w-full max-w-full group/item transition-all duration-300`}
-      >
-        <div
-          className="absolute inset-0 opacity-0 group-hover/item:opacity-100 transition-opacity duration-300 rounded-md"
-          style={{ background: `linear-gradient(to right, transparent, color-mix(in srgb, white 28%, transparent), transparent)` }}
-        />
-        <p
-          className={`font-goudy-italic relative font-medium normal-case ${textAlign} transition-all duration-300 whitespace-nowrap max-w-full overflow-hidden text-ellipsis`}
-          style={{ ...nameStyle, color: palette.heading }}
-          title={displayName}
-        >
-          {displayName}
-        </p>
-        {showRole && member.roleTitle && (
-          <p
-            className={`relative ${ct.role} font-medium mt-0.5 leading-tight ${textAlign} tracking-wide uppercase transition-colors duration-300 whitespace-nowrap max-w-full overflow-hidden text-ellipsis`}
-            style={{ color: palette.label }}
-            title={member.roleTitle}
-          >
-            {member.roleTitle}
-          </p>
-        )}
-      </div>
-    )
-  }
-
-  // Helper component for two-column layout wrapper
-  const TwoColumnLayout = ({ 
-    children, 
-    leftTitle, 
-    rightTitle,
-    singleTitle,
-    centerContent = false 
-  }: { 
-    children: React.ReactNode
-    leftTitle?: string
-    rightTitle?: string
-    singleTitle?: string
-    centerContent?: boolean
-  }) => {
-    if (singleTitle) {
-      return (
-        <div className="mb-2 sm:mb-2.5 md:mb-3">
-          <SectionTitle>{singleTitle}</SectionTitle>
-          <div className={`grid grid-cols-2 gap-x-1.5 sm:gap-x-3 md:gap-x-5 gap-y-1 sm:gap-y-1.5 ${centerContent ? 'max-w-3xl mx-auto' : ''}`}>
-            {children}
-          </div>
-        </div>
-      )
-    }
-
-    return (
-      <div className="mb-2 sm:mb-2.5 md:mb-3">
-        <div className="grid grid-cols-2 gap-x-1.5 sm:gap-x-3 md:gap-x-5 mb-2 sm:mb-2.5 md:mb-3">
-          {leftTitle && (
-            <SectionTitle align="right" className="pr-0.5 sm:pr-1">{leftTitle}</SectionTitle>
-          )}
-          {rightTitle && (
-            <SectionTitle align="left" className="pl-0.5 sm:pl-1">{rightTitle}</SectionTitle>
-          )}
-        </div>
-        <div className={`grid grid-cols-2 gap-x-1.5 sm:gap-x-3 md:gap-x-5 gap-y-1 sm:gap-y-1.5 ${centerContent ? 'max-w-3xl mx-auto' : ''}`}>
-          {children}
-        </div>
-      </div>
-    )
-  }
 
   return (
     <div
@@ -492,727 +436,169 @@ export function Entourage() {
       >
         <SectionCornerDecorations />
 
-      {/* Section Header */}
-      <div className={`relative z-20 mx-auto mb-6 max-w-5xl px-6 text-center @container/entourage sm:mb-8 sm:px-10 md:mb-10 md:px-12 transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-10"}`}>
-        <EntourageCoupleLabel
-          groom={siteConfig.couple.groomNickname || siteConfig.couple.groom}
-          bride={siteConfig.couple.brideNickname || siteConfig.couple.bride}
-        />
-
-        <div className="my-4 sm:my-5 md:my-6">
-          <EntourageTitle />
-        </div>
-
-        <p
-          className={`font-goudy-italic mx-auto max-w-xl px-2 ${sectionType.textRelaxed}`}
-          style={{ color: "var(--color-welcome-text)" }}
+        <div
+          className={`relative z-20 mx-auto mb-6 max-w-5xl px-6 text-center @container/entourage sm:mb-8 sm:px-10 md:mb-10 md:px-12 transition-all duration-1000 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-10"
+          }`}
         >
-          Honoring those who stand with us on our special day
-        </p>
-
-        <div className="flex items-center justify-center pt-3 sm:pt-4">
-          <span
-            className="h-px w-16 sm:w-24 md:w-32"
-            style={dividerLineStyle}
+          <EntourageCoupleLabel
+            groom={siteConfig.couple.groomNickname || siteConfig.couple.groom}
+            bride={siteConfig.couple.brideNickname || siteConfig.couple.bride}
           />
-        </div>
-      </div>
 
-      {/* Central Card Container */}
-      <div
-        className={`relative z-20 max-w-5xl mx-auto px-4 sm:px-6 md:px-8 pb-2 sm:pb-3 @container/entourage-card transition-all duration-1000 delay-300 ${
-          isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-        }`}
-      >
-        <div className="relative">
-          <div
-            className="pointer-events-none absolute -inset-1 rounded-2xl opacity-50 blur-2xl sm:-inset-2"
-            style={ambientGlowStyle}
-            aria-hidden
-          />
-          <div
-            className="relative z-20 overflow-hidden rounded-xl border backdrop-blur-xl transition-all duration-500 sm:rounded-2xl sm:backdrop-blur-2xl"
-            style={cardStyle}
+          <p
+            className={`${cinzel.className} ${sectionType.label} mt-5 font-semibold uppercase tracking-[0.28em] sm:mt-6 sm:tracking-[0.34em]`}
+            style={{ color: "var(--color-welcome-heading)" }}
           >
-            <div
-              className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/40 via-white/10 to-transparent"
-              aria-hidden
-            />
-            <div
-              className="pointer-events-none absolute inset-0"
-              style={{
-                background:
-                  "linear-gradient(to top, color-mix(in srgb, var(--color-motif-deep) 8%, transparent), transparent 45%)",
-              }}
-              aria-hidden
-            />
-            <div
-              className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-white/35 sm:rounded-2xl"
-              aria-hidden
-            />
+            The Silver Wedding
+          </p>
 
-            {/* Card content */}
-            <div className="relative p-5 sm:p-6 md:p-8 lg:p-10 z-20">
-            {isLoading ? (
-              <div className="flex items-center justify-center py-24 sm:py-28 md:py-32">
-                <span className={`font-goudy-italic ${ct.body}`} style={{ color: palette.body }}>
-                  Loading entourage...
-                </span>
-              </div>
-            ) : error ? (
-              <div className="flex items-center justify-center py-24 sm:py-28 md:py-32">
-                <div className="text-center">
-                  <p className={`font-goudy-italic ${ct.bodyLg} mb-3`} style={{ color: palette.body }}>
-                    {error}
-                  </p>
-                  <button
-                    onClick={fetchEntourage}
-                    className={`${cinzel.className} ${ct.body} underline transition-colors duration-200 hover:opacity-80`}
-                    style={{ color: palette.accent }}
-                  >
-                    Try again
-                  </button>
-                </div>
-              </div>
-            ) : entourage.length === 0 ? (
-              <div className="text-center py-24 sm:py-28 md:py-32">
-                <p className={`font-goudy-italic ${ct.bodyLg}`} style={{ color: palette.body }}>
-                  No entourage members yet
-                </p>
-              </div>
-            ) : (
-            <>
-              {ROLE_CATEGORY_ORDER.map((category, categoryIndex) => {
-                const members = grouped[category] || []
-                const bridalPartyHasMembers =
-                  (grouped["Groomsmen"]?.length ?? 0) > 0 ||
-                  (grouped["Bridesmaids"]?.length ?? 0) > 0
-                
-                if (
-                  members.length === 0 &&
-                  !(category === "Groomsmen" && bridalPartyHasMembers)
-                ) {
-                  return null
-                }
-                if (HIDDEN_ROLE_CATEGORIES.has(category)) return null
-                if (category === "Peer Sponsors") return null
+          <div className="my-3 sm:my-4 md:my-5">
+            <EntourageTitle />
+          </div>
 
-                // Render OFFICIATING MINISTER directly above Principal Sponsors (in Parents block)
-                if (category === "OFFICIATING MINISTER" && hasParents) return null
+          <p
+            className={`font-goudy-italic mx-auto max-w-xl px-2 ${sectionType.textRelaxed}`}
+            style={{ color: "var(--color-welcome-text)" }}
+          >
+            Honoring those who stand with us as we celebrate twenty-five years of faith, family, and
+            covenant love.
+          </p>
 
-                // Special handling for The Couple - display Bride and Groom side by side
-                if (category === "The Couple") {
-                   const groom = members.find(m => m.roleTitle?.toLowerCase().includes('groom'))
-                  const bride = members.find(m => m.roleTitle?.toLowerCase().includes('bride'))
-                  
-                  return (
-                    <div key={category}>
-                      {categoryIndex > 0 && (
-                        <div className="flex justify-center py-2 sm:py-2.5 md:py-3 mb-2 sm:mb-2.5 md:mb-3">
-                          <div className="w-full max-w-md h-px" style={dividerLineStyle} />
-                        </div>
-                      )}
-                      <TwoColumnLayout singleTitle="The Couple" centerContent={true}>
-                        <div className="px-0.5 sm:px-1 md:px-1.5 min-w-0 overflow-hidden">
-                          {groom && <NameItem member={groom} align="right" />}
-                        </div>
-                        <div className="px-0.5 sm:px-1 md:px-1.5 min-w-0 overflow-hidden">
-                          {bride && <NameItem member={bride} align="left" />}
-                        </div>
-                      </TwoColumnLayout>
-                    </div>
-                  )
-                }
-
-                // Special handling for Parents sections - combine into single two-column layout
-                if (category === "Parents of the Bride" || category === "Parents of the Groom") {
-                  // Get both parent groups
-                  const parentsBride = grouped["Parents of the Bride"] || []
-                  const parentsGroom = grouped["Parents of the Groom"] || []
-                  
-                  // Helper function to sort parents: father first, then mother
-                  const sortParents = (members: EntourageMember[]) => {
-                    return [...members].sort((a, b) => {
-                      const aIsFather = a.roleTitle?.toLowerCase().includes('father') ?? false
-                      const bIsFather = b.roleTitle?.toLowerCase().includes('father') ?? false
-                      
-                      // Father comes first
-                      if (aIsFather && !bIsFather) return -1
-                      if (!aIsFather && bIsFather) return 1
-                      return 0
-                    })
-                  }
-                  
-                  // Only render once (when processing "Parents of the Groom")
-                  if (category === "Parents of the Groom") {
-                    return (
-                      <div key="Parents">
-                        {categoryIndex > 0 && (
-                          <div className="flex justify-center py-2 sm:py-2.5 md:py-3 mb-2 sm:mb-2.5 md:mb-3">
-                            <div className="w-full max-w-md h-px" style={dividerLineStyle} />
-                          </div>
-                        )}
-                        <TwoColumnLayout leftTitle="Groom’s Parents" rightTitle="Bride’s Parents">
-                          {(() => {
-                            const leftArr = sortParents(parentsGroom)
-                            const rightArr = sortParents(parentsBride)
-                            const maxLen = Math.max(leftArr.length, rightArr.length)
-                            const rows = []
-                            for (let i = 0; i < maxLen; i++) {
-                              const left = leftArr[i]
-                              const right = rightArr[i]
-                              rows.push(
-                                <React.Fragment key={`parents-row-${i}`}>
-                                  <div key={`parent-groom-${i}`} className="px-0.5 sm:px-1 md:px-1.5 min-w-0 overflow-hidden">
-                                    {left ? <NameItem member={left} align="right" /> : <div className="py-0.5" />}
-                                  </div>
-                                  <div key={`parent-bride-${i}`} className="px-0.5 sm:px-1 md:px-1.5 min-w-0 overflow-hidden">
-                                    {right ? <NameItem member={right} align="left" /> : <div className="py-0.5" />}
-                                  </div>
-                                </React.Fragment>
-                              )
-                            }
-                            return rows
-                          })()}
-                        </TwoColumnLayout>
-                        
-                        {/* Officiating Minister section - displayed above Principal Sponsors */}
-                        {(() => {
-                          const officiating = grouped["OFFICIATING MINISTER"] || []
-                          if (officiating.length === 0) return null
-                          return (
-                            <div key="OfficiatingMinisterBeforeSponsors" className="mt-4 sm:mt-5 md:mt-6">
-                              <TwoColumnLayout singleTitle="OFFICIATING MINISTER" centerContent={true}>
-                                {officiating.map((member, idx) => (
-                                  <div
-                                    key={`officiating-${idx}-${member.name}`}
-                                    className="col-span-2 flex justify-center min-w-0 overflow-hidden px-0.5 sm:px-1"
-                                  >
-                                    <NameItem member={member} align="center" showRole={false} />
-                                  </div>
-                                ))}
-                              </TwoColumnLayout>
-                            </div>
-                          )
-                        })()}
-
-                        {/* Principal Sponsors section - displayed after Parents */}
-                        {sponsors.length > 0 && (
-                          <div key="SponsorsAfterParents">
-                            <div className="flex justify-center py-1.5 sm:py-2 md:py-2.5 mb-2 sm:mb-2.5 md:mb-3">
-                            </div>
-                            <TwoColumnLayout singleTitle="Principal Sponsors" centerContent={true}>
-                              {sponsors.map((sponsor, idx) => (
-                                <React.Fragment key={`sponsor-row-${idx}`}>
-                                  <div key={`sponsor-male-${idx}`} className="px-0.5 sm:px-1 md:px-1.5 min-w-0 overflow-hidden">
-                                    {sponsor.malePrincipalSponsor ? (
-                                      <NameItem 
-                                        member={{
-                                          name: sponsor.malePrincipalSponsor,
-                                          roleCategory: "",
-                                          roleTitle: "",
-                                          email: ""
-                                        }} 
-                                        align="right" 
-                                        showRole={false}
-                                      />
-                                    ) : (
-                                      <div className="py-0.5 sm:py-1 md:py-1.5" />
-                                    )}
-                                  </div>
-                                  <div key={`sponsor-female-${idx}`} className="px-0.5 sm:px-1 md:px-1.5 min-w-0 overflow-hidden">
-                                    {sponsor.femalePrincipalSponsor ? (
-                                      <NameItem 
-                                        member={{
-                                          name: sponsor.femalePrincipalSponsor,
-                                          roleCategory: "",
-                                          roleTitle: "",
-                                          email: ""
-                                        }} 
-                                        align="left" 
-                                        showRole={false}
-                                      />
-                                    ) : (
-                                      <div className="py-0.5 sm:py-1 md:py-1.5" />
-                                    )}
-                                  </div>
-                                </React.Fragment>
-                              ))}
-                            </TwoColumnLayout>
-                          </div>
-                        )}
-
-                        {/* Peer Sponsors section - displayed after Principal Sponsors */}
-                        {(() => {
-                          const peerSponsors = grouped["Peer Sponsors"] || []
-                          if (peerSponsors.length === 0) return null
-                          return (
-                            <div key="PeerSponsorsAfterPrincipal">
-                              <div className="flex justify-center py-1.5 sm:py-2 md:py-2.5 mb-2 sm:mb-2.5 md:mb-3" />
-                              <TwoColumnLayout singleTitle="Peer Sponsors" centerContent={true}>
-                                {peerSponsors.length === 2 ? (
-                                  <>
-                                    <div className="px-0.5 sm:px-1 md:px-1.5 min-w-0 overflow-hidden">
-                                      <NameItem member={peerSponsors[0]} align="right" showRole={false} />
-                                    </div>
-                                    <div className="px-0.5 sm:px-1 md:px-1.5 min-w-0 overflow-hidden">
-                                      <NameItem member={peerSponsors[1]} align="left" showRole={false} />
-                                    </div>
-                                  </>
-                                ) : peerSponsors.length <= 2 ? (
-                                  <div className="col-span-full">
-                                    <div className="max-w-sm mx-auto flex flex-col items-center gap-0.5 sm:gap-1 md:gap-1">
-                                      {peerSponsors.map((member, idx) => (
-                                        <NameItem
-                                          key={`peer-sponsor-${idx}-${member.name}`}
-                                          member={member}
-                                          align="center"
-                                          showRole={false}
-                                        />
-                                      ))}
-                                    </div>
-                                  </div>
-                                ) : (
-                                  (() => {
-                                    const half = Math.ceil(peerSponsors.length / 2)
-                                    const left = peerSponsors.slice(0, half)
-                                    const right = peerSponsors.slice(half)
-                                    const maxLen = Math.max(left.length, right.length)
-                                    const rows = []
-                                    for (let i = 0; i < maxLen; i++) {
-                                      const l = left[i]
-                                      const r = right[i]
-                                      rows.push(
-                                        <React.Fragment key={`peer-sponsor-row-${i}`}>
-                                          <div className="px-0.5 sm:px-1 md:px-1.5 min-w-0 overflow-hidden">
-                                            {l ? (
-                                              <NameItem member={l} align="right" showRole={false} />
-                                            ) : (
-                                              <div className="py-0.5 sm:py-1 md:py-1.5" />
-                                            )}
-                                          </div>
-                                          <div className="px-0.5 sm:px-1 md:px-1.5 min-w-0 overflow-hidden">
-                                            {r ? (
-                                              <NameItem member={r} align="left" showRole={false} />
-                                            ) : (
-                                              <div className="py-0.5 sm:py-1 md:py-1.5" />
-                                            )}
-                                          </div>
-                                        </React.Fragment>
-                                      )
-                                    }
-                                    return rows
-                                  })()
-                                )}
-                              </TwoColumnLayout>
-                            </div>
-                          )
-                        })()}
-                      </div>
-                    )
-                  }
-                  // Skip rendering for "Parents of the Bride" since it's already rendered above
-                  return null
-                }
-
-                // Special handling for Family of the Groom/Bride - combine into single two-column layout
-                if (category === "Family of the Groom" || category === "Family of the Bride") {
-                  const familyGroom = grouped["Family of the Groom"] || []
-                  const familyBride = grouped["Family of the Bride"] || []
-
-                  if (category === "Family of the Groom") {
-                    return (
-                      <div key="Family">
-                        {categoryIndex > 0 && (
-                          <div className="flex justify-center py-2 sm:py-2.5 md:py-3 mb-2 sm:mb-2.5 md:mb-3">
-                            <div className="w-full max-w-md h-px" style={dividerLineStyle} />
-                          </div>
-                        )}
-                        <TwoColumnLayout leftTitle="Family of the Groom" rightTitle="Family of the Bride">
-                          {(() => {
-                            const maxLen = Math.max(familyGroom.length, familyBride.length)
-                            const rows = []
-                            for (let i = 0; i < maxLen; i++) {
-                              const left = familyGroom[i]
-                              const right = familyBride[i]
-                              rows.push(
-                                <React.Fragment key={`family-row-${i}`}>
-                                  <div key={`family-groom-${i}`} className="px-0.5 sm:px-1 md:px-1.5 min-w-0 overflow-hidden">
-                                    {left ? <NameItem member={left} align="right" /> : <div className="py-0.5" />}
-                                  </div>
-                                  <div key={`family-bride-${i}`} className="px-0.5 sm:px-1 md:px-1.5 min-w-0 overflow-hidden">
-                                    {right ? <NameItem member={right} align="left" /> : <div className="py-0.5" />}
-                                  </div>
-                                </React.Fragment>
-                              )
-                            }
-                            return rows
-                          })()}
-                        </TwoColumnLayout>
-                      </div>
-                    )
-                  }
-
-                  return null
-                }
-
-                // Man of Honor, Maid/Matron of Honor, and Best Man — Man of Honor above Best Men
-                if (
-                  category === "Man of Honor" ||
-                  category === "Matron of Honor" ||
-                  category === "Maid of Honor" ||
-                  category === "Best Man"
-                ) {
-                  const manOfHonor = grouped["Man of Honor"] || []
-                  const maidOfHonor = [
-                    ...(grouped["Maid of Honor"] || []),
-                    ...(grouped["Matron of Honor"] || []),
-                  ]
-                  const bestMan = grouped["Best Man"] || []
-
-                  const firstHonorCategory = HONOR_ATTENDANT_BLOCK_CATEGORIES.find(
-                    (honorCategory) => (grouped[honorCategory]?.length ?? 0) > 0
-                  )
-                  if (category !== firstHonorCategory) return null
-
-                  const hasBestManOrMaid =
-                    bestMan.length > 0 || maidOfHonor.length > 0
-
-                  return (
-                    <div key="HonorAttendants">
-                      {categoryIndex > 0 && (
-                        <div className="flex justify-center py-2 sm:py-2.5 md:py-3 mb-2 sm:mb-2.5 md:mb-3">
-                          <div className="w-full max-w-md h-px" style={dividerLineStyle} />
-                        </div>
-                      )}
-
-                      {manOfHonor.length > 0 && (
-                        <TwoColumnLayout singleTitle="Man of Honor" centerContent={true}>
-                          {manOfHonor.map((member, idx) => (
-                            <div
-                              key={`man-of-honor-${idx}-${member.name}`}
-                              className="col-span-2 flex justify-center min-w-0 overflow-hidden px-0.5 sm:px-1"
-                            >
-                              <NameItem member={member} align="center" />
-                            </div>
-                          ))}
-                        </TwoColumnLayout>
-                      )}
-
-                      {manOfHonor.length > 0 && hasBestManOrMaid && (
-                        <div className="flex justify-center py-1.5 sm:py-2 md:py-2.5 mb-2 sm:mb-2.5 md:mb-3">
-                          <div className="w-full max-w-md h-px" style={dividerLineStyle} />
-                        </div>
-                      )}
-
-                      {hasBestManOrMaid && (
-                        <TwoColumnLayout leftTitle="Best Man" rightTitle="Maid of Honor">
-                          {(() => {
-                            const maxLen = Math.max(bestMan.length, maidOfHonor.length)
-                            const rows = []
-                            for (let i = 0; i < maxLen; i++) {
-                              const left = bestMan[i]
-                              const right = maidOfHonor[i]
-                              rows.push(
-                                <React.Fragment key={`honor-row-${i}`}>
-                                  <div
-                                    key={`bestman-cell-${i}`}
-                                    className="px-0.5 sm:px-1 md:px-1.5 min-w-0 overflow-hidden"
-                                  >
-                                    {left ? (
-                                      <NameItem member={left} align="right" />
-                                    ) : (
-                                      <div className="py-0.5" />
-                                    )}
-                                  </div>
-                                  <div
-                                    key={`maid-cell-${i}`}
-                                    className="px-0.5 sm:px-1 md:px-1.5 min-w-0 overflow-hidden"
-                                  >
-                                    {right ? (
-                                      <NameItem member={right} align="left" />
-                                    ) : (
-                                      <div className="py-0.5" />
-                                    )}
-                                  </div>
-                                </React.Fragment>
-                              )
-                            }
-                            return rows
-                          })()}
-                        </TwoColumnLayout>
-                      )}
-                    </div>
-                  )
-                }
-
-                // Special handling for Little Groom and Little Bride - combine into single two-column layout
-                if (category === "Little Groom" || category === "Little Bride") {
-                  // Get both little ones groups
-                  const littleGroom = grouped["Little Groom"] || []
-                  const littleBride = grouped["Little Bride"] || []
-                  
-                  // Only render once (when processing "Little Groom")
-                  if (category === "Little Groom") {
-                    return (
-                      <div key="LittleOnes">
-                        {categoryIndex > 0 && (
-                          <div className="flex justify-center py-2 sm:py-2.5 md:py-3 mb-2 sm:mb-2.5 md:mb-3">
-                            <div className="w-full max-w-md h-px" style={dividerLineStyle} />
-                          </div>
-                        )}
-                        <TwoColumnLayout leftTitle="Little Groom" rightTitle="Little Bride">
-                          {(() => {
-                            const maxLen = Math.max(littleGroom.length, littleBride.length)
-                            const rows = []
-                            for (let i = 0; i < maxLen; i++) {
-                              const left = littleGroom[i]
-                              const right = littleBride[i]
-                              rows.push(
-                                <React.Fragment key={`little-row-${i}`}>
-                                  <div key={`littlegroom-cell-${i}`} className="px-0.5 sm:px-1 md:px-1.5 min-w-0 overflow-hidden">
-                                    {left ? <NameItem member={left} align="right" /> : <div className="py-0.5" />}
-                                  </div>
-                                  <div key={`littlebride-cell-${i}`} className="px-0.5 sm:px-1 md:px-1.5 min-w-0 overflow-hidden">
-                                    {right ? <NameItem member={right} align="left" /> : <div className="py-0.5" />}
-                                  </div>
-                                </React.Fragment>
-                              )
-                            }
-                            return rows
-                          })()}
-                        </TwoColumnLayout>
-                      </div>
-                    )
-                  }
-                  // Skip rendering for "Little Bride" since it's already rendered above
-                  return null
-                }
-
-                // Special handling for Bridesmaids and Groomsmen - combine into single two-column layout
-                if (category === "Bridesmaids" || category === "Groomsmen") {
-                  // Get both bridal party groups
-                  const bridesmaids = grouped["Bridesmaids"] || []
-                  const groomsmen = grouped["Groomsmen"] || []
-                  
-                  // Only render once (when processing "Groomsmen")
-                  if (category === "Groomsmen") {
-                    return (
-                      <React.Fragment key="BridalPartySection">
-                        {/* Groomsmen/Bridesmaids section */}
-                        <div key="BridalParty">
-                          {categoryIndex > 0 && (
-                            <div className="flex justify-center py-2 sm:py-2.5 md:py-3 mb-2 sm:mb-2.5 md:mb-3">
-                              <div className="w-full max-w-md h-px" style={dividerLineStyle} />
-                            </div>
-                          )}
-                          <TwoColumnLayout leftTitle="Groomsmen" rightTitle="Bridesmaids">
-                            {(() => {
-                              const maxLen = Math.max(bridesmaids.length, groomsmen.length)
-                              const rows = []
-                              for (let i = 0; i < maxLen; i++) {
-                                const groomsman = groomsmen[i]
-                                const bridesmaid = bridesmaids[i]
-                                rows.push(
-                                  <React.Fragment key={`bridal-row-${i}`}>
-                                    <div key={`groomsman-cell-${i}`} className="px-0.5 sm:px-1 md:px-1.5 min-w-0 overflow-hidden">
-                                      {groomsman ? <NameItem member={groomsman} align="right" /> : <div className="py-0.5 sm:py-1 md:py-1.5" />}
-                                    </div>
-                                    <div key={`bridesmaid-cell-${i}`} className="px-0.5 sm:px-1 md:px-1.5 min-w-0 overflow-hidden">
-                                      {bridesmaid ? <NameItem member={bridesmaid} align="left" /> : <div className="py-0.5 sm:py-1 md:py-1.5" />}
-                                    </div>
-                                  </React.Fragment>
-                                )
-                              }
-                              return rows
-                            })()}
-                          </TwoColumnLayout>
-                        </div>
-                      </React.Fragment>
-                    )
-                  }
-                  // Skip rendering for "Bridesmaids" since it's already rendered above
-                  return null
-                }
-
-                // Secondary Sponsors block: render all three groups under one heading
-                if (category === "Candle Sponsors" || category === "Veil Sponsors" || category === "Cord Sponsors" || category === "Ribbon Sponsors") {
-                  // Only render the full block once — when processing the first one that exists in order
-                  const secondarySponsorGroups = ["Candle Sponsors", "Veil Sponsors", "Cord Sponsors", "Ribbon Sponsors"] as const
-                  const firstPresentGroup = secondarySponsorGroups.find((g) => (grouped[g]?.length ?? 0) > 0)
-                  if (category !== firstPresentGroup) return null
-
-                  const renderPairedGroup = (groupName: string) => {
-                    const grpMembers = grouped[groupName] || []
-                    if (grpMembers.length === 0) return null
-                    return (
-                      <div key={groupName} className="mb-2 sm:mb-2.5 md:mb-3">
-                        <TwoColumnLayout singleTitle={groupName} centerContent={true}>
-                          {grpMembers.length === 2 ? (
-                            <>
-                              <div className="px-0.5 sm:px-1 md:px-1.5 min-w-0 overflow-hidden">
-                                <NameItem member={grpMembers[0]} align="right" />
-                              </div>
-                              <div className="px-0.5 sm:px-1 md:px-1.5 min-w-0 overflow-hidden">
-                                <NameItem member={grpMembers[1]} align="left" />
-                              </div>
-                            </>
-                          ) : (
-                            <div className="col-span-full">
-                              <div className="max-w-sm mx-auto flex flex-col items-center gap-0.5 sm:gap-1 md:gap-1">
-                                {grpMembers.map((member, idx) => (
-                                  <NameItem key={`${groupName}-${idx}-${member.name}`} member={member} align="center" />
-                                ))}
-                              </div>
-                            </div>
-                          )}
-                        </TwoColumnLayout>
-                      </div>
-                    )
-                  }
-
-                  return (
-                    <div key="SecondarySponsorBlock">
-                      {categoryIndex > 0 && (
-                        <div className="flex justify-center py-2 sm:py-2.5 md:py-3 mb-2 sm:mb-2.5 md:mb-3">
-                          <div className="w-full max-w-md h-px" style={dividerLineStyle} />
-                        </div>
-                      )}
-                      {/* Parent heading */}
-                      <div className="mb-2 sm:mb-2.5 md:mb-3">
-                        <SectionTitle>Secondary Sponsors</SectionTitle>
-                      </div>
-                      {secondarySponsorGroups.map(renderPairedGroup)}
-                    </div>
-                  )
-                }
-
-                // Default: single title, centered content
-                return (
-                  <div key={category}>
-                    {categoryIndex > 0 && (
-                      <div className="flex justify-center py-2 sm:py-2.5 md:py-3 mb-2 sm:mb-2.5 md:mb-3">
-                            <div className="w-full max-w-md h-px" style={dividerLineStyle} />
-                      </div>
-                    )}
-                    <TwoColumnLayout singleTitle={category} centerContent={true}>
-                      {(() => {
-                        const SINGLE_COLUMN_SECTIONS = new Set([
-                          "Best Man",
-                          "Maid of Honor",
-                          "Ring Bearer",
-                          "Coin Bearer",
-                          "Bible Bearer",
-                          "Flower Girls",
-                          "Presider",
-                        ])
-                        // Special rule: paired sponsor roles with exactly 2 names should meet at center
-                        const PAIRED_SECTIONS = new Set(["Candle Sponsors", "Cord Sponsors", "Veil Sponsors"])
-                        if (PAIRED_SECTIONS.has(category) && members.length === 2) {
-                          const left = members[0]
-                          const right = members[1]
-                          return (
-                            <>
-                              <div className="px-0.5 sm:px-1 md:px-1.5 min-w-0 overflow-hidden">
-                                <NameItem member={left} align="right" />
-                              </div>
-                              <div className="px-0.5 sm:px-1 md:px-1.5 min-w-0 overflow-hidden">
-                                <NameItem member={right} align="left" />
-                              </div>
-                            </>
-                          )
-                        }
-                        if (SINGLE_COLUMN_SECTIONS.has(category) || members.length <= 2) {
-                          return (
-                            <div className="col-span-full">
-                              <div className="max-w-sm mx-auto flex flex-col items-center gap-1 sm:gap-1.5 md:gap-2">
-                                {members.map((member, idx) => (
-                                  <NameItem key={`${category}-${idx}-${member.name}`} member={member} align="center" />
-                                ))}
-                              </div>
-                            </div>
-                          )
-                        }
-                        // Default two-column sections: render row-by-row pairs to keep alignment on small screens
-                        const half = Math.ceil(members.length / 2)
-                        const left = members.slice(0, half)
-                        const right = members.slice(half)
-                        const maxLen = Math.max(left.length, right.length)
-                        const rows = []
-                        for (let i = 0; i < maxLen; i++) {
-                          const l = left[i]
-                          const r = right[i]
-                          rows.push(
-                            <React.Fragment key={`${category}-row-${i}`}>
-                              <div key={`${category}-cell-left-${i}`} className="px-0.5 sm:px-1 md:px-1.5 min-w-0 overflow-hidden">
-                                {l ? <NameItem member={l} align="right" /> : <div className="py-0.5 sm:py-1 md:py-1.5" />}
-                              </div>
-                              <div key={`${category}-cell-right-${i}`} className="px-0.5 sm:px-1 md:px-1.5 min-w-0 overflow-hidden">
-                                {r ? <NameItem member={r} align="left" /> : <div className="py-0.5 sm:py-1 md:py-1.5" />}
-                              </div>
-                            </React.Fragment>
-                          )
-                        }
-                        return rows
-                      })()}
-                    </TwoColumnLayout>
-                  </div>
-                )
-              })}
-              
-              {/* Display any other categories not in the ordered list */}
-              {Object.keys(grouped).filter(cat => !ROLE_CATEGORY_ORDER.includes(cat) && cat !== "Other" && cat !== "Peer Sponsors").map((category) => {
-                const members = grouped[category]
-                return (
-                  <div key={category}>
-                    <div className="flex justify-center py-2 sm:py-2.5 md:py-3 mb-2 sm:mb-2.5 md:mb-3">
-                      <div className="w-full max-w-md h-px" style={dividerLineStyle} />
-                    </div>
-                    <TwoColumnLayout singleTitle={category} centerContent={true}>
-                      {(() => {
-                        if (members.length <= 2) {
-                          return (
-                            <div className="col-span-full">
-                              <div className="max-w-sm mx-auto flex flex-col items-center gap-1 sm:gap-1.5 md:gap-2">
-                                {members.map((member, idx) => (
-                                  <NameItem key={`${category}-${idx}-${member.name}`} member={member} align="center" />
-                                ))}
-                              </div>
-                            </div>
-                          )
-                        }
-                        // Pair row-by-row for other categories as well
-                        const half = Math.ceil(members.length / 2)
-                        const left = members.slice(0, half)
-                        const right = members.slice(half)
-                        const maxLen = Math.max(left.length, right.length)
-                        const rows = []
-                        for (let i = 0; i < maxLen; i++) {
-                          const l = left[i]
-                          const r = right[i]
-                          rows.push(
-                            <React.Fragment key={`${category}-row-${i}`}>
-                              <div key={`${category}-cell-left-${i}`} className="px-0.5 sm:px-1 md:px-1.5 min-w-0 overflow-hidden">
-                                {l ? <NameItem member={l} align="right" /> : <div className="py-0.5 sm:py-1 md:py-1.5" />}
-                              </div>
-                              <div key={`${category}-cell-right-${i}`} className="px-0.5 sm:px-1 md:px-1.5 min-w-0 overflow-hidden">
-                                {r ? <NameItem member={r} align="left" /> : <div className="py-0.5 sm:py-1 md:py-1.5" />}
-                              </div>
-                            </React.Fragment>
-                          )
-                        }
-                        return rows
-                      })()}
-                    </TwoColumnLayout>
-                  </div>
-                )
-              })}
-            </>
-            )}
+          <div className="flex items-center justify-center pt-3 sm:pt-4">
+            <span className="h-px w-16 sm:w-24 md:w-32" style={dividerLineStyle} />
           </div>
         </div>
+
+        <div
+          className={`relative z-20 mx-auto max-w-5xl px-4 pb-2 sm:px-6 sm:pb-3 md:px-8 @container/entourage-card transition-all duration-1000 delay-300 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+          }`}
+        >
+          <div className="relative">
+            <div
+              className="pointer-events-none absolute -inset-1 rounded-2xl opacity-50 blur-2xl sm:-inset-2"
+              style={ambientGlowStyle}
+              aria-hidden
+            />
+            <div
+              className="relative z-20 overflow-hidden rounded-xl border backdrop-blur-xl transition-all duration-500 sm:rounded-2xl sm:backdrop-blur-2xl"
+              style={cardStyle}
+            >
+              <div
+                className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/40 via-white/10 to-transparent"
+                aria-hidden
+              />
+              <div
+                className="pointer-events-none absolute inset-0"
+                style={{
+                  background:
+                    "linear-gradient(to top, color-mix(in srgb, var(--color-motif-deep) 8%, transparent), transparent 45%)",
+                }}
+                aria-hidden
+              />
+              <div
+                className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-white/35 sm:rounded-2xl"
+                aria-hidden
+              />
+              <div className="wedding-frame-inner" aria-hidden />
+
+              <div className="relative z-20 px-5 py-8 sm:px-8 sm:py-10 md:px-10 md:py-12 lg:px-14 lg:py-14">
+                <section>
+                  <ChapterHeading>Our Parents</ChapterHeading>
+                  <ul className="flex flex-col items-center gap-3 sm:gap-3.5">
+                    {PARENTS.map((couple) => (
+                      <li key={couple[0]}>
+                        <CoupleName couple={couple} featured />
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+
+                <ChapterRule />
+
+                <section>
+                  <ChapterHeading>Principal Sponsors</ChapterHeading>
+                  <Blurb>{PRINCIPAL_INTRO}</Blurb>
+
+                  <div className="mt-8 grid gap-5 sm:mt-10 sm:gap-6 md:grid-cols-2 md:gap-6 lg:gap-8">
+                    {[ORIGINAL_SPONSORS, MILESTONE_SPONSORS].map((group) => (
+                      <ProgramPanel key={group.title}>
+                        <RoleBlock title={group.title} description={group.description}>
+                          <CoupleList couples={group.couples} />
+                        </RoleBlock>
+                      </ProgramPanel>
+                    ))}
+                  </div>
+                </section>
+
+                <ChapterRule />
+
+                <section>
+                  <ChapterHeading>The Core Attendants</ChapterHeading>
+                  <div className="grid gap-5 sm:gap-6 md:grid-cols-2 md:items-stretch md:gap-6 lg:gap-8">
+                    <ProgramPanel>
+                      <RoleBlock title={BEST_MAN.title} description={BEST_MAN.description}>
+                        <PersonName featured>{BEST_MAN.name}</PersonName>
+                      </RoleBlock>
+                    </ProgramPanel>
+                    <ProgramPanel>
+                      <RoleBlock title={MAIDS_OF_HONOR.title} description={MAIDS_OF_HONOR.description}>
+                        <ul className="flex flex-col items-center gap-2">
+                          {MAIDS_OF_HONOR.names.map((name) => (
+                            <li key={name}>
+                              <PersonName featured>{name}</PersonName>
+                            </li>
+                          ))}
+                        </ul>
+                      </RoleBlock>
+                    </ProgramPanel>
+                  </div>
+                </section>
+
+                <ChapterRule />
+
+                <section>
+                  <ChapterHeading>Groomsmen &amp; Bridesmaids</ChapterHeading>
+                  <ProgramPanel>
+                    <Blurb>{GROOMSMEN_BRIDESMAIDS.description}</Blurb>
+                    <CoupleList couples={GROOMSMEN_BRIDESMAIDS.couples} />
+                  </ProgramPanel>
+                </section>
+
+                <ChapterRule />
+
+                <section>
+                  <ChapterHeading>Secondary Sponsors</ChapterHeading>
+                  <div className="grid gap-5 sm:gap-6 lg:grid-cols-3 lg:gap-6">
+                    {SECONDARY_SPONSORS.map((sponsor) => (
+                      <ProgramPanel key={sponsor.title}>
+                        <RoleBlock title={sponsor.title} description={sponsor.description}>
+                          <CoupleName couple={sponsor.couple} />
+                        </RoleBlock>
+                      </ProgramPanel>
+                    ))}
+                  </div>
+                </section>
+
+                <ChapterRule />
+
+                <section>
+                  <ChapterHeading>Junior Attendants</ChapterHeading>
+                  <div className="grid gap-5 sm:grid-cols-2 sm:gap-5 lg:gap-6">
+                    {JUNIOR_ATTENDANTS.map((attendant) => (
+                      <ProgramPanel key={attendant.title}>
+                        <RoleBlock title={attendant.title} description={attendant.description}>
+                          <PersonName featured>{attendant.name}</PersonName>
+                        </RoleBlock>
+                      </ProgramPanel>
+                    ))}
+                  </div>
+                </section>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
       </section>
     </div>
   )

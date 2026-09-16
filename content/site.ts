@@ -27,7 +27,7 @@ export const siteConfig = {
   wedding: {
     date: "December 13, 2026",
     time: "3:00 PM",
-    venue: "To Be Announced",
+    venue: "San Pablo MPC Pavilion, Malolos, Bulacan",
     tagline: "are getting married!!!!!",
     theme: "Our wedding palette is inspired by timeless elegance and warmth.Motif Colors: Champagne Gold, Soft Beige, Warm Soft Brown",
     motif: "#BBCED5, #B9C3A8, #F3D8C5, #D1C4D4, #ECD8BA, #F4E8D8, #E1DCCF",
@@ -50,7 +50,7 @@ export const siteConfig = {
   },
   details: {
     rsvp: {
-      deadline: "September 12, 2026",
+      deadline: "November 12, 2026",
       coordinator: "To Be Announced",
       phone: "To Be Announced",
     },
@@ -79,24 +79,24 @@ export const siteConfig = {
     // }
   },
   ceremony: {
-    location: "To Be Announced",
-    venue: "To Be Announced",
-    map: "https://maps.app.goo.gl/6Uo3aPZHLPf4DmNAA",
+    location: "San Pablo MPC Pavilion",
+    venue: "Malolos, Bulacan",
+    map: "https://maps.app.goo.gl/nyXehbkv6yCjHQLM6",
     date: "December 13, 2026",
     day: "Sunday",
     time: "3:00 PM",
     entourageTime: "12:00 PM",
     guestsTime: "12:30 PM",
-    image: ["/Details/ceremony.webp", "/Details/ceremony2.webp", "/Details/ceremony3.webp"],
+    image: ["/Details/venue.jpg"],
   },
   reception: {
-    location: "To Be Announced",
-    venue: "To Be Announced",
-    map: "https://maps.app.goo.gl/6Uo3aPZHLPf4DmNAA",
+    location: "San Pablo MPC Pavilion",
+    venue: "Malolos, Bulacan",
+    map: "https://maps.app.goo.gl/nyXehbkv6yCjHQLM6",
     date: "December 13, 2026",
     day: "Sunday",
     time: "5:00 PM",
-    image: ["/Details/reception1.webp", "/Details/reception2.webp","/Details/reception3.webp"],
+    image: ["/Details/venue.jpg"],
   },
   dressCode: {
       theme: "STRICTLY FORMAL",
