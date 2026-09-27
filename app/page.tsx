@@ -18,6 +18,8 @@ import { Registry } from "@/components/sections/registry"
 import { FAQ } from "@/components/sections/faq"
 import { GuestInformation } from "@/components/sections/guest-information"
 import { Footer } from "@/components/sections/footer"
+import { PreActivities } from "@/components/sections/pre-activities"
+import { DressCode } from "@/components/sections/dress-code"
 import { LoveStory } from "@/components/sections/love-story"
 import { WeddingPlaylist } from "@/components/sections/wedding-playlist"
 import { Hero as InvitationHero } from "@/components/loader/Hero"
@@ -91,24 +93,26 @@ export default function Home() {
               {appState === AppState.DETAILS && <div className="h-12 sm:h-14 md:h-16" aria-hidden />}
               <MainHero visible={appState === AppState.DETAILS} />
               <Welcome />
+              <Entourage />
                {/* <CoupleVideo />  */}
               {/* <LoveStory /> */}
               <Countdown />
               <Gallery />
               <VideoMessage />
-              <Messages />
               {/* <OurCelebration /> */}
               <Details />
+              <PreActivities />
+              <DressCode />
               {/* <Accommodation /> */}
               {/* <GuestInformation /> */}
-              {/* <WeddingTimeline /> */}
-              <Entourage />
+              <WeddingTimeline />
               <GuestList />
               {/* <BookOfGuests /> */}
               {/* <PrincipalSponsors /> */}
               <WeddingPlaylist />
+              <Registry />
               <FAQ />
-              {/* <Registry /> */}
+              <Messages />
               {/* <SnapShare /> */}
 
               <Footer />

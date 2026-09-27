@@ -26,7 +26,7 @@ export const siteConfig = {
   },
   wedding: {
     date: "December 13, 2026",
-    time: "3:00 PM",
+    time: "5:00 PM",
     venue: "San Pablo MPC Pavilion, Malolos, Bulacan",
     tagline: "are getting married!!!!!",
     theme: "Our wedding palette is inspired by timeless elegance and warmth.Motif Colors: Champagne Gold, Soft Beige, Warm Soft Brown",
@@ -66,17 +66,17 @@ export const siteConfig = {
   },
   giftRegistry: {
     QR_1:{
-    id: "Gcash",
-    src: "/QR/Gcash.png",
-    label: "Gcash",
-    accountNumber: "M** M : 0945****039",
+    id: "SM Gift Registry",
+    src: "/QR/thesmstoregiftregistry.png",
+    label: "SM Gift Registry",
+    accountNumber: "https://www.thesmstoregiftregistry.com/eventdetail/6aa3c13b2333eb17e4203509?eventCode=8256374",
     },
-    // QR_2:{
-    // id: "GOtyme Bank",
-    // src: "/QR/GOtyme.png",
-    // label: "GOtyme Bank",
-    // accountNumber: "John Wendel Talagtag",
-    // }
+    QR_2:{
+    id: "Digital Wishing Well",
+    src: "/QR/maribank.png",
+    label: "Digital Wishing Well – InstaPay",
+    accountNumber: "",
+    },
   },
   ceremony: {
     location: "San Pablo MPC Pavilion",
@@ -84,9 +84,9 @@ export const siteConfig = {
     map: "https://maps.app.goo.gl/nyXehbkv6yCjHQLM6",
     date: "December 13, 2026",
     day: "Sunday",
-    time: "3:00 PM",
+    time: "5:00 PM",
     entourageTime: "12:00 PM",
-    guestsTime: "12:30 PM",
+    guestsTime: "4:00 PM",
     image: ["/Details/venue.jpg"],
   },
   reception: {
@@ -95,28 +95,28 @@ export const siteConfig = {
     map: "https://maps.app.goo.gl/nyXehbkv6yCjHQLM6",
     date: "December 13, 2026",
     day: "Sunday",
-    time: "5:00 PM",
+    time: "After the Mass",
     image: ["/Details/venue.jpg"],
   },
   dressCode: {
-      theme: "STRICTLY FORMAL",
-    colors: "#C3878C, #ECB4BC, #EBA7B3, #E8B3A7",
+      theme: "SEMI-FORMAL / COCKTAIL",
+    colors: "#C0C0C0, #A8A8A8, #8B8B8B, #5A5A5A",
     sponsors: {
       photo: "/Details/sponsors-new.png",
-      male: "Barong and Black Pants",
-      female: "Dusty Blue Long Gown",
+      male: "Silver or Gray Barong Tagalog with Black Pants",
+      female: "Silver or Gray Long Gown/Dress",
     },
     entourage: {
       photo: "/Details/sponsors.png",
-      male: "Barong and Black Pants",
-      female: "Dusty Blue Long Gown",
+      male: "Silver or Gray Barong Tagalog with Black Pants",
+      female: "Silver or Gray Long Gown/Dress",
     },
     guests: {
       photo: "/Details/new-guest.png",
-      male: "Black Suit without Tie",
-      female: "Champagne Gold, Chocolate Brown, Beige and Sage Green Long Dress",
+      male: "Silver or Gray attire only",
+      female: "Silver or Gray attire only",
     },
-    note: "We kindly request our guests to dress in attire following our wedding palette."
+    note: "We kindly ask our guests to join us in our color theme."
   },
   narratives: {
     ourStory: `Once upon a signature…

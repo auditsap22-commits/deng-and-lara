@@ -1,11 +1,12 @@
 "use client"
 
-import { useState, type CSSProperties } from "react"
+import { useEffect, useState, type CSSProperties, type ReactNode } from "react"
 import { Cinzel } from "next/font/google"
 import localFont from "next/font/local"
-import { useSiteConfig } from "@/hooks/use-site-config"
-import { layeredSectionTitleSize, sectionType } from "@/lib/section-typography"
+import { X } from "lucide-react"
 import Image from "next/image"
+import { SectionCornerDecorations } from "@/components/section-corner-decorations"
+import { layeredSectionTitleSize, sectionType } from "@/lib/section-typography"
 
 const cinzel = Cinzel({
   subsets: ["latin"],
@@ -36,59 +37,59 @@ const dividerLineStyle = {
     "linear-gradient(to right, transparent, color-mix(in srgb, var(--color-motif-deep) 38%, transparent), transparent)",
 } as const
 
-const glassPanelStyle = {
-  background: "rgba(255, 255, 255, 0.52)",
-  borderWidth: "1px",
-  borderStyle: "solid" as const,
-  borderColor: "rgba(255, 255, 255, 0.72)",
-  boxShadow:
-    "0 8px 32px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.92)",
-} as const
+const INTRO_TEXT =
+  "As we honor our parents’ 25 years of marriage, your blessings and company are what they desire most. Should you wish to celebrate this milestone with a gesture, a selection from their registry or a contribution to our Digital Wishing Well would be warmly appreciated."
 
-const innerSurfaceStyle = {
-  background: "rgba(255, 255, 255, 0.36)",
-  borderColor: "rgba(255, 255, 255, 0.58)",
-} as const
+const SM_REGISTRY_URL =
+  "https://www.thesmstoregiftregistry.com/eventdetail/6aa3c13b2333eb17e4203509?eventCode=8256374"
 
-function GlassSurfaceLayers() {
+const REGISTRY_OPTIONS = [
+  {
+    id: "sm-registry",
+    tab: "SM Registry",
+    title: "SM Gift Registry",
+    src: "/QR/thesmstoregiftregistry.png",
+    href: SM_REGISTRY_URL,
+    actionLabel: "Open SM Gift Registry",
+    hint: "Scan or open their SM Gift Registry",
+  },
+  {
+    id: "instapay",
+    tab: "Wishing Well",
+    title: "Digital Wishing Well – InstaPay",
+    src: "/QR/maribank.png",
+    hint: "Scan to send via InstaPay",
+  },
+] as const
+
+function SpecialMark({ children }: { children: string }) {
   return (
-    <>
-      <div
-        className="pointer-events-none absolute inset-0 rounded-[inherit] bg-gradient-to-br from-white/65 via-white/28 to-white/10"
-        aria-hidden
-      />
-      <div
-        className="pointer-events-none absolute inset-0 rounded-[inherit] ring-1 ring-inset ring-white/55"
-        aria-hidden
-      />
-    </>
+    <span
+      className={`${aboveTheBeyond.className} mx-1 inline-block normal-case tracking-normal sm:mx-1.5`}
+      style={{
+        fontSize: "0.72em",
+        color: palette.accent,
+        verticalAlign: "0.08em",
+        lineHeight: 1,
+      }}
+      aria-hidden
+    >
+      {children}
+    </span>
   )
 }
 
-const ct = {
-  body: sectionType.text,
-  bodyLg: sectionType.textRelaxed,
-  label: sectionType.label,
-} as const
-
-function SectionDivider() {
-  return (
-    <div className="flex items-center justify-center gap-1.5">
-      <span className="h-px w-6 sm:w-10" style={dividerLineStyle} />
-      <span
-        className="h-0.5 w-0.5 rounded-full sm:h-1 sm:w-1"
-        style={{ backgroundColor: palette.accent }}
-        aria-hidden
-      />
-      <span className="h-px w-6 sm:w-10" style={dividerLineStyle} />
-    </div>
+function withSpecialMarks(text: string): ReactNode {
+  const parts = text.split(/([&\-/—–])/g)
+  return parts.map((part, index) =>
+    /[&\-/—–]/.test(part) ? <SpecialMark key={`${part}-${index}`}>{part}</SpecialMark> : part,
   )
 }
 
 function RegistryTitle() {
   return (
-    <div
-      className="welcome-title-lockup relative mx-auto mt-2 w-full max-w-full text-center sm:mt-3 md:mt-4"
+    <h2
+      className="welcome-title-lockup relative mx-auto w-full max-w-full text-center"
       style={
         {
           "--title-size": layeredSectionTitleSize.main,
@@ -98,10 +99,13 @@ function RegistryTitle() {
       }
     >
       <span
-        className={`${theSeasons.className} block uppercase leading-[0.78] tracking-[0.08em] min-[400px]:tracking-[0.11em] sm:tracking-[0.13em] md:tracking-[0.14em]`}
-        style={{ fontSize: "var(--title-size)", color: palette.heading }}
+        className={`${theSeasons.className} block uppercase leading-[0.86] tracking-[0.06em] min-[400px]:tracking-[0.1em] sm:tracking-[0.12em]`}
+        style={{
+          fontSize: "var(--title-size)",
+          color: palette.heading,
+        }}
       >
-        Gift Guide
+        The Silver Registry
       </span>
       <span
         aria-hidden
@@ -110,145 +114,197 @@ function RegistryTitle() {
           marginTop: "var(--script-overlap)",
           fontSize: "var(--script-size)",
           color: palette.accent,
+          textShadow:
+            "0 1px 0 color-mix(in srgb, var(--color-welcome-bg) 95%, white), 0 0 10px color-mix(in srgb, var(--color-welcome-bg) 65%, white)",
         }}
       >
-        With gratitude
+        with gratitude
       </span>
-      <span className="sr-only">With gratitude</span>
-    </div>
+      <span className="sr-only">with gratitude</span>
+    </h2>
   )
 }
 
 export function Registry() {
-  const siteConfig = useSiteConfig()
-  const registryItems = Object.values(siteConfig.giftRegistry ?? {})
-  const [activeQr, setActiveQr] = useState(registryItems[0]?.id ?? "")
-  const activeItem = registryItems.find((item) => item.id === activeQr) ?? registryItems[0]
-  const { brideNickname, groomNickname } = siteConfig.couple
+  const [activeId, setActiveId] = useState<(typeof REGISTRY_OPTIONS)[number]["id"]>("sm-registry")
+  const [enlarged, setEnlarged] = useState(false)
+  const activeItem = REGISTRY_OPTIONS.find((item) => item.id === activeId) ?? REGISTRY_OPTIONS[0]
+
+  useEffect(() => {
+    if (!enlarged) return
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setEnlarged(false)
+    }
+    window.addEventListener("keydown", onKey)
+    return () => window.removeEventListener("keydown", onKey)
+  }, [enlarged])
 
   return (
     <section
       id="registry"
-      className={`${theSeasons.variable} ${aboveTheBeyond.variable} relative z-10 overflow-visible bg-transparent py-6 sm:py-10 md:py-12 lg:py-16`}
+      className={`${theSeasons.variable} ${aboveTheBeyond.variable} relative z-10 overflow-hidden pt-8 pb-8 sm:pt-10 sm:pb-10 md:pt-12 md:pb-12 lg:pt-14 lg:pb-14`}
+      style={{ background: "var(--color-welcome-bg)" }}
     >
-      <div className="relative z-10 mx-auto max-w-3xl px-2 @container/registry sm:px-3 md:px-4 lg:px-6">
-        <div
-          className="relative overflow-visible rounded-xl border backdrop-blur-xl sm:rounded-2xl sm:backdrop-blur-2xl"
-          style={glassPanelStyle}
+      <SectionCornerDecorations />
+
+      <div className="relative z-20 mx-auto mb-6 max-w-5xl px-6 text-center @container/registry sm:mb-8 sm:px-10 md:mb-10 md:px-12">
+        <p
+          className={`${cinzel.className} ${sectionType.label} mb-2 font-semibold uppercase tracking-[0.34em] min-[400px]:tracking-[0.38em] sm:tracking-[0.44em]`}
+          style={{ color: palette.label }}
         >
-          <GlassSurfaceLayers />
-
-          <div className="relative z-10 px-4 py-6 sm:px-6 sm:py-8 md:px-8 md:py-10">
-            {/* Header */}
-            <div className="relative mx-auto mb-4 max-w-2xl text-center sm:mb-6 md:mb-8">
-              <div className="mx-auto mb-5 sm:mb-6 md:mb-7">
-                <SectionDivider />
-              </div>
-
-              <RegistryTitle />
-
-              <p
-                className={`font-goudy-italic mx-auto mt-5 max-w-2xl whitespace-pre-line px-2 sm:mt-6 ${ct.bodyLg}`}
-                style={{ color: palette.body }}
-              >
-                {`As love is what this day is all about,\nyour presence is already the greatest gift we could ever ask for.\nHowever, if you'd like to give, a monetary gift toward our future would be most appreciated.`}
-              </p>
-
-              <div className="mt-4 flex items-center justify-center sm:mt-5">
-                <span className="h-px w-16 sm:w-24 md:w-32" style={dividerLineStyle} />
-              </div>
-            </div>
-
-            {registryItems.length > 0 && activeItem && (
-              <div
-                className="relative mx-auto max-w-2xl overflow-visible rounded-lg border backdrop-blur-md sm:rounded-xl md:rounded-2xl"
-                style={{
-                  ...innerSurfaceStyle,
-                  boxShadow: "inset 0 1px 0 rgba(255, 255, 255, 0.78)",
-                }}
-              >
-                <div className="relative z-10 px-4 py-6 text-center sm:px-6 sm:py-8 md:px-8">
-                  {registryItems.length > 1 && (
-                    <div className="mb-5 flex flex-wrap items-center justify-center gap-2 sm:mb-6">
-                      {registryItems.map((item) => {
-                        const isActive = item.id === activeQr
-                        return (
-                          <button
-                            key={item.id}
-                            type="button"
-                            onClick={() => setActiveQr(item.id)}
-                            className={`${cinzel.className} rounded-sm border px-4 py-2 ${sectionType.label} font-semibold uppercase tracking-[0.16em] transition-all duration-300 sm:px-5 sm:py-2.5 sm:tracking-[0.2em]`}
-                            style={
-                              isActive
-                                ? {
-                                    backgroundColor: palette.accent,
-                                    borderColor:
-                                      "color-mix(in srgb, var(--color-welcome-navy) 35%, transparent)",
-                                    color: "var(--color-welcome-bg)",
-                                  }
-                                : {
-                                    backgroundColor: "rgba(255, 255, 255, 0.55)",
-                                    borderColor: "rgba(255, 255, 255, 0.72)",
-                                    color: palette.heading,
-                                  }
-                            }
-                          >
-                            {item.label}
-                          </button>
-                        )
-                      })}
-                    </div>
-                  )}
-
-                  <p
-                    className={`${cinzel.className} ${ct.label} mb-4 font-semibold uppercase tracking-[0.18em] sm:mb-5`}
-                    style={{ color: palette.heading }}
-                  >
-                    {activeItem.label}
-                  </p>
-
-                  <div className="mx-auto mb-4 inline-flex sm:mb-5">
-                    <div className="relative h-44 w-44 rounded-lg border border-white/70 bg-white/80 p-2 shadow-sm sm:h-52 sm:w-52 md:h-56 md:w-56">
-                      <Image
-                        src={activeItem.src}
-                        alt={`${activeItem.label} QR code`}
-                        fill
-                        className="rounded-lg object-contain"
-                        sizes="(max-width: 640px) 176px, 224px"
-                      />
-                    </div>
-                  </div>
-
-                  {activeItem.accountNumber && (
-                    <div className="mx-auto max-w-sm">
-                      <p
-                        className={`${cinzel.className} ${ct.label} mb-1 font-semibold uppercase tracking-[0.14em]`}
-                        style={{ color: palette.label }}
-                      >
-                        Account Details
-                      </p>
-                      <p className={`font-goudy-italic ${ct.bodyLg}`} style={{ color: palette.body }}>
-                        {activeItem.accountNumber}
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-
-            <div className="mt-6 space-y-2 text-center sm:mt-8">
-              <p className={`font-goudy-italic ${ct.body}`} style={{ color: palette.body }}>
-                Thank you from the bottom of our hearts.
-              </p>
-              <p className={`font-goudy-italic ${ct.body} italic`} style={{ color: palette.body }}>
-                With love,
-                <br />
-                {groomNickname} and {brideNickname}
-              </p>
-            </div>
-          </div>
+          Gift Guide
+        </p>
+        <div className="my-4 sm:my-5 md:my-6">
+          <RegistryTitle />
+        </div>
+        <p
+          className={`font-goudy-italic mx-auto max-w-2xl px-2 ${sectionType.textRelaxed}`}
+          style={{ color: palette.body }}
+        >
+          {INTRO_TEXT}
+        </p>
+        <div className="flex items-center justify-center pt-4 sm:pt-5">
+          <span className="h-px w-16 sm:w-24 md:w-32" style={dividerLineStyle} />
         </div>
       </div>
+
+      <div className="relative z-20 mx-auto max-w-xl px-4 sm:px-6 md:px-8">
+        <div className="mb-6 flex justify-center" role="tablist" aria-label="Registry options">
+          <div
+            className="inline-flex rounded-full border p-1"
+            style={{
+              borderColor: "color-mix(in srgb, var(--color-motif-deep) 14%, transparent)",
+              background: "color-mix(in srgb, white 42%, transparent)",
+            }}
+          >
+            {REGISTRY_OPTIONS.map((option) => {
+              const isActive = option.id === activeId
+              return (
+                <button
+                  key={option.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={isActive}
+                  id={`registry-tab-${option.id}`}
+                  aria-controls="registry-panel"
+                  onClick={() => setActiveId(option.id)}
+                  className={`${cinzel.className} rounded-full px-4 py-2 text-[0.65rem] font-semibold uppercase tracking-[0.16em] transition-all duration-300 sm:px-5 sm:py-2.5 sm:text-xs sm:tracking-[0.18em]`}
+                  style={
+                    isActive
+                      ? {
+                          backgroundColor: palette.accent,
+                          color: "var(--color-welcome-bg)",
+                          boxShadow: "0 4px 14px color-mix(in srgb, var(--color-welcome-green) 28%, transparent)",
+                        }
+                      : {
+                          backgroundColor: "transparent",
+                          color: palette.heading,
+                        }
+                  }
+                >
+                  {option.tab}
+                </button>
+              )
+            })}
+          </div>
+        </div>
+
+        <div
+          id="registry-panel"
+          role="tabpanel"
+          aria-labelledby={`registry-tab-${activeItem.id}`}
+          className="flex flex-col items-center px-2 py-2 text-center sm:px-4"
+        >
+          <h3
+            className={`${theSeasons.className} text-lg uppercase tracking-[0.1em] sm:text-xl`}
+            style={{ color: palette.heading }}
+          >
+            {withSpecialMarks(activeItem.title)}
+          </h3>
+          <p className={`font-goudy-italic mt-2 ${sectionType.textRelaxed}`} style={{ color: palette.body }}>
+            {activeItem.hint}
+          </p>
+
+          <button
+            type="button"
+            onClick={() => setEnlarged(true)}
+            className="mt-5 rounded-xl bg-white p-3 shadow-sm transition hover:scale-[1.02] active:scale-[0.99] sm:mt-6 sm:p-4"
+            style={{
+              border: "1px solid color-mix(in srgb, var(--color-motif-deep) 12%, transparent)",
+            }}
+            aria-label={`Enlarge ${activeItem.title} QR code`}
+          >
+            <Image
+              key={activeItem.id}
+              src={activeItem.src}
+              alt={`${activeItem.title} QR code`}
+              width={280}
+              height={280}
+              className="h-[220px] w-[220px] object-contain sm:h-[260px] sm:w-[260px] md:h-[280px] md:w-[280px]"
+              sizes="(max-width: 640px) 220px, (max-width: 768px) 260px, 280px"
+              priority
+            />
+          </button>
+          <p className={`font-goudy-italic mt-3 ${sectionType.label}`} style={{ color: palette.label }}>
+            Tap QR to enlarge
+          </p>
+
+          {"href" in activeItem && activeItem.href ? (
+            <a
+              href={activeItem.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`${cinzel.className} ${sectionType.text} mt-5 inline-flex items-center justify-center rounded-full border px-5 py-2.5 font-semibold uppercase tracking-[0.12em] transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]`}
+              style={{
+                backgroundColor: "var(--color-welcome-green)",
+                borderColor: "color-mix(in srgb, var(--color-welcome-navy) 35%, transparent)",
+                color: "var(--color-welcome-bg)",
+                boxShadow: "0 6px 20px color-mix(in srgb, var(--color-welcome-green) 35%, transparent)",
+              }}
+            >
+              {activeItem.actionLabel}
+            </a>
+          ) : null}
+        </div>
+      </div>
+
+      {enlarged && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm sm:p-6"
+          onClick={() => setEnlarged(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${activeItem.title} QR code`}
+        >
+          <button
+            type="button"
+            onClick={() => setEnlarged(false)}
+            className="absolute right-4 top-4 rounded-full border border-white/30 bg-black/40 p-2 text-white transition hover:bg-black/60 sm:right-6 sm:top-6"
+            aria-label="Close QR code"
+          >
+            <X className="h-5 w-5" />
+          </button>
+          <div
+            className="w-full max-w-[22rem] rounded-2xl bg-white p-5 sm:max-w-md sm:p-7"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <p
+              className={`${cinzel.className} mb-4 text-center ${sectionType.label} font-semibold uppercase tracking-[0.16em]`}
+              style={{ color: palette.heading }}
+            >
+              {activeItem.title}
+            </p>
+            <Image
+              src={activeItem.src}
+              alt={`${activeItem.title} QR code`}
+              width={480}
+              height={480}
+              className="mx-auto h-auto w-full object-contain"
+              priority
+            />
+          </div>
+        </div>
+      )}
     </section>
   )
 }

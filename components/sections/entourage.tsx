@@ -97,9 +97,9 @@ const MILESTONE_SPONSORS = {
     "To witness our 25-year covenant: anchoring our domestic church with the same spiritual foundation, love, and guidance that brought us from our wedding day to this silver milestone.",
   couples: [
     ["Mr. Orly Araujo", "Mrs. Gina Araujo"],
-    ["Mr. Rene Marcos", "Mrs. Amor Marcos"],
-    ["Mr. Noel Griño", "Mrs. Deanna Griño"],
-    ["Atty. Arnel Santos", "Atty. Bing Santos"],
+    ["Mr. Rene Marcos", "Mrs. Amor Landas-Marcos"],
+    ["Engr. Noel Griño", "Mrs. Deanna Griño"],
+    ["Atty. Arnel Santos", "Atty. Mariter Santos"],
     ["Engr. Demi Aquino", "Mrs. Jean Aquino"],
     ["Dr. Edilberto Cavaneyro", "Mrs. Lucita Cavaneyro"],
   ] as Couple[],
@@ -124,9 +124,9 @@ const GROOMSMEN_BRIDESMAIDS = {
     "To stand beside us in our silver year, symbolizing a quarter-century of shared joys, steadfast friendship, and unwavering support on our journey.",
   couples: [
     ["Dr. Ding Regino", "Dra. Maricel Regino"],
-    ["Mr. Bong Tolentino", "Mrs. Ritchie Tolentino"],
+    ["Mr. Bong", "Mrs. Richie Tolentino"],
     ["Mr. Raffy Geraldez", "Mrs. Judith Geraldez"],
-    ["Mr. Matt Barba", "Mrs. Hazel Barba"],
+    ["Mr. Mathew Barba", "Mrs. Hazel Barba"],
   ] as Couple[],
 }
 

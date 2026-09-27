@@ -118,7 +118,6 @@ function FaqTitle() {
 }
 
 function getFaqItems(siteConfig: SiteConfig): FAQItem[] {
-  const guestArrival = siteConfig.ceremony.guestsTime ?? "30–45 minutes before the ceremony"
   const dressTheme = siteConfig.dressCode.theme
 
   return [
@@ -128,12 +127,13 @@ function getFaqItems(siteConfig: SiteConfig): FAQItem[] {
     },
     {
       question: "What time should I arrive for the ceremony?",
-      answer: `Our ceremony will begin promptly at ${siteConfig.ceremony.time}. We kindly ask guests to arrive by ${guestArrival} to allow enough time for parking, walking to the ceremony area, and finding your seats so we can begin on time.`,
+      answer:
+        "We recommend you arrive at least 4:00 PM because we've prepared pre-activities for you to enjoy our special day.",
     },
-    // {
-    //   question: "Where will the ceremony and reception take place?",
-    //   answer: `The ceremony will be held at ${siteConfig.ceremony.location}, ${siteConfig.ceremony.venue} at ${siteConfig.ceremony.time}. The reception will follow at ${siteConfig.reception.location}, ${siteConfig.reception.venue} at ${siteConfig.reception.time}. You can find detailed directions, addresses, and maps in the Event Details section above.`,
-    // },
+    {
+      question: "Where will the ceremony and reception take place?",
+      answer: `The Wedding Ceremony / Mass and Reception / Dinner will be held at the same venue: ${siteConfig.ceremony.location}, ${siteConfig.ceremony.venue}. There is no need to transfer to another location.`,
+    },
     {
       question: "How do I RSVP?",
       answer: (
@@ -197,7 +197,7 @@ function getFaqItems(siteConfig: SiteConfig): FAQItem[] {
     },
     {
       question: "What is the dress code?",
-      answer: `${dressTheme}. ${siteConfig.dressCode.note} You can find outfit inspiration and palette details in the Event Details section above.`,
+      answer: `${dressTheme}. Entourage: ladies in a silver or gray long gown/dress; gentlemen in a silver or gray Barong Tagalog with black pants. Guests: silver or gray attire only. ${siteConfig.dressCode.note}`,
     },
     {
       question: "Unplugged Ceremony",

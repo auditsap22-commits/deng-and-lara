@@ -112,7 +112,7 @@ function DetailsTitle() {
           color: "var(--color-welcome-navy)",
         }}
       >
-        Reception
+        The Venue
       </span>
       <span
         aria-hidden
@@ -137,9 +137,9 @@ export function Details() {
   const [copied, setCopied] = useState(false)
   const [showMap, setShowMap] = useState(false)
 
-  const eventDate = new Date(siteConfig.reception.date)
-  const day = siteConfig.reception.day
-  const time = siteConfig.reception.time
+  const eventDate = new Date(siteConfig.ceremony.date)
+  const day = siteConfig.ceremony.day
+  const time = "5:00 PM"
 
   useEffect(() => {
     if (!showMap) return
@@ -189,7 +189,7 @@ export function Details() {
             className={`font-goudy-italic mx-auto max-w-2xl px-2 ${sectionType.textRelaxed}`}
             style={{ color: "var(--color-welcome-text)" }}
           >
-            We look forward to celebrating with you at San Pablo MPC Pavilion.
+            The Wedding Ceremony / Mass and Reception / Dinner will be held at the same venue.
           </p>
 
           <SectionIconDivider
@@ -231,7 +231,7 @@ export function Details() {
                   <span
                     className={`${cinzel.className} mb-2 inline-block rounded-full border border-white/30 bg-white/20 px-3 py-1 uppercase tracking-[0.2em] text-white backdrop-blur-sm ${sectionType.label}`}
                   >
-                    Reception
+                    Ceremony &amp; Reception
                   </span>
                   <h3
                     className={`${theSeasons.className} mb-1 text-lg font-semibold uppercase leading-tight tracking-[0.1em] text-white drop-shadow-lg sm:text-xl md:text-2xl lg:text-3xl`}
@@ -282,7 +282,13 @@ export function Details() {
                     className={`${cinzel.className} text-sm font-semibold uppercase tracking-[0.14em] sm:text-base md:text-lg lg:text-xl`}
                     style={{ color: detailText.heading }}
                   >
-                    At {time}
+                    Ceremony / Mass at {time}
+                  </p>
+                  <p
+                    className={`font-goudy-italic mx-auto mt-2 max-w-md ${ct.body}`}
+                    style={{ color: detailText.body }}
+                  >
+                    Arrival / Pre-Activities at 4:00 PM · Photos at 6:00 PM · Dinner after the Mass
                   </p>
                 </div>
 
@@ -316,7 +322,7 @@ export function Details() {
                         className={`${cinzel.className} ${ct.label} mb-2 font-semibold uppercase tracking-wide`}
                         style={{ color: detailText.label }}
                       >
-                        Reception Venue
+                        One Venue
                       </p>
                       <p
                         className={`${theSeasons.className} text-base font-semibold uppercase leading-snug tracking-[0.06em] sm:text-lg md:text-xl`}
@@ -380,7 +386,7 @@ export function Details() {
                       e.currentTarget.style.borderColor =
                         "color-mix(in srgb, var(--color-welcome-navy) 35%, transparent)"
                     }}
-                    aria-label="Get directions to the reception venue"
+                    aria-label="Get directions to the ceremony and reception venue"
                   >
                     <Navigation className="h-3.5 w-3.5 shrink-0 sm:h-4 sm:w-4 md:h-5 md:w-5" />
                     <span>Get Directions</span>
@@ -394,7 +400,7 @@ export function Details() {
                       backgroundColor: "var(--color-welcome-bg-soft)",
                       borderColor: "color-mix(in srgb, var(--color-motif-deep) 20%, transparent)",
                     }}
-                    aria-label="Copy reception venue address"
+                    aria-label="Copy venue address"
                   >
                     {copied ? (
                       <Check
