@@ -139,7 +139,7 @@ export function Details() {
 
   const eventDate = new Date(siteConfig.ceremony.date)
   const day = siteConfig.ceremony.day
-  const time = "5:00 PM"
+  const time = "4:00 PM"
 
   useEffect(() => {
     if (!showMap) return

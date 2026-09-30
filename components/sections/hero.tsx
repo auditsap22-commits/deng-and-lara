@@ -374,7 +374,7 @@ export function Hero({ visible = true }: HeroProps) {
                 fontSize: "clamp(0.68rem, 1.65vw, 0.8rem)",
               }}
             >
-              RSVP by September 12, 2026
+              RSVP by November 12, 2026
             </p>
           </div>
 

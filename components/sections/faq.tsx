@@ -197,7 +197,7 @@ function getFaqItems(siteConfig: SiteConfig): FAQItem[] {
     },
     {
       question: "What is the dress code?",
-      answer: `${dressTheme}. Entourage: ladies in a silver or gray long gown/dress; gentlemen in a silver or gray Barong Tagalog with black pants. Guests: silver or gray attire only. ${siteConfig.dressCode.note}`,
+      answer: `${dressTheme}. Entourage: ladies in a silver or gray long gown; gentlemen in a silver or gray Barong Tagalog with black pants. Guests: silver or gray attire only. ${siteConfig.dressCode.note}`,
     },
     {
       question: "Unplugged Ceremony",

@@ -100,21 +100,21 @@ export const siteConfig = {
   },
   dressCode: {
       theme: "SEMI-FORMAL / COCKTAIL",
-    colors: "#C0C0C0, #A8A8A8, #8B8B8B, #5A5A5A",
+    colors: "#C8C8C8, #A8A8A8, #8A8F96",
     sponsors: {
       photo: "/Details/sponsors-new.png",
-      male: "Silver or Gray Barong Tagalog with Black Pants",
-      female: "Silver or Gray Long Gown/Dress",
+      male: "Silver or Gray Barong Tagalog, Black Pants",
+      female: "Silver or Gray Long Gown",
     },
     entourage: {
       photo: "/Details/sponsors.png",
-      male: "Silver or Gray Barong Tagalog with Black Pants",
-      female: "Silver or Gray Long Gown/Dress",
+      male: "Silver or Gray Barong Tagalog, Black Pants",
+      female: "Silver or Gray Long Gown",
     },
     guests: {
       photo: "/Details/new-guest.png",
-      male: "Silver or Gray attire only",
-      female: "Silver or Gray attire only",
+      male: "Silver or Gray Attire Only",
+      female: "Silver or Gray Attire Only",
     },
     note: "We kindly ask our guests to join us in our color theme."
   },

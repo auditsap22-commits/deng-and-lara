@@ -35,7 +35,11 @@ const dividerLineStyle = {
     "linear-gradient(to right, transparent, color-mix(in srgb, var(--color-motif-deep) 38%, transparent), transparent)",
 } as const
 
-const SILVER_SWATCHES = ["#D9D9D9", "#C0C0C0", "#A8A8A8", "#7A7A7A", "#1A1A1A"] as const
+const COLOR_SEALS = [
+  { name: "Metallic Silver", color: "#C8C8C8" },
+  { name: "Dove Gray", color: "#A8A8A8" },
+  { name: "Steel Gray", color: "#8A8F96" },
+] as const
 
 function SpecialMark({
   children,
@@ -86,7 +90,7 @@ function SectionTitle() {
           color: palette.heading,
         }}
       >
-        The Wedding Attire
+        Wedding Attire
       </span>
       <span
         aria-hidden
@@ -99,78 +103,55 @@ function SectionTitle() {
             "0 1px 0 color-mix(in srgb, var(--color-welcome-bg) 95%, white), 0 0 10px color-mix(in srgb, var(--color-welcome-bg) 65%, white)",
         }}
       >
-        silver <SpecialMark>&</SpecialMark> gray
+        <SpecialMark>&</SpecialMark> details
       </span>
-      <span className="sr-only">silver and gray</span>
+      <span className="sr-only">and details</span>
     </h2>
   )
 }
 
-function ColorPalette() {
+function AttireLine({ children }: { children: ReactNode }) {
   return (
-    <div
-      className="mx-auto flex h-8 w-full max-w-xs overflow-hidden rounded-full border-2 border-white sm:h-9"
-      role="img"
-      aria-label="Silver and gray color palette"
+    <p className={`font-goudy-italic ${sectionType.textRelaxed}`} style={{ color: palette.body }}>
+      {children}
+    </p>
+  )
+}
+
+function AttireLabel({ children }: { children: ReactNode }) {
+  return (
+    <p
+      className={`${cinzel.className} ${sectionType.label} mt-4 font-semibold uppercase tracking-[0.16em] first:mt-0`}
+      style={{ color: palette.label }}
     >
-      {SILVER_SWATCHES.map((color) => (
-        <div key={color} className="min-w-0 flex-1" style={{ backgroundColor: color }} title={color} />
+      {children}
+    </p>
+  )
+}
+
+function ColorSeals() {
+  return (
+    <div className="mt-10 flex flex-wrap items-start justify-center gap-6 sm:mt-12 sm:gap-10">
+      {COLOR_SEALS.map((seal) => (
+        <div key={seal.name} className="flex w-20 flex-col items-center gap-2.5 sm:w-24">
+          <span
+            className="h-12 w-12 rounded-full shadow-sm sm:h-14 sm:w-14"
+            style={{
+              backgroundColor: seal.color,
+              boxShadow:
+                "inset 0 1px 2px rgba(255,255,255,0.55), 0 4px 10px color-mix(in srgb, var(--color-motif-deep) 16%, transparent)",
+              border: "1px solid color-mix(in srgb, var(--color-motif-deep) 12%, transparent)",
+            }}
+            aria-hidden
+          />
+          <p
+            className={`${cinzel.className} text-center text-[0.62rem] font-semibold uppercase leading-snug tracking-[0.12em] sm:text-[0.68rem]`}
+            style={{ color: palette.label }}
+          >
+            {seal.name}
+          </p>
+        </div>
       ))}
-    </div>
-  )
-}
-
-function AttireLine({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="text-center">
-      <p
-        className={`${cinzel.className} ${sectionType.label} font-semibold uppercase tracking-[0.16em]`}
-        style={{ color: palette.label }}
-      >
-        {label}
-      </p>
-      <p
-        className={`font-goudy-italic mt-1.5 ${sectionType.textRelaxed}`}
-        style={{ color: palette.body }}
-      >
-        {withSpecialMarks(value)}
-      </p>
-    </div>
-  )
-}
-
-function AttireGroup({
-  kicker,
-  title,
-  children,
-}: {
-  kicker: string
-  title: string
-  children: ReactNode
-}) {
-  return (
-    <div className="px-2 text-center sm:px-4">
-      <p
-        className={`${cinzel.className} ${sectionType.label} font-semibold uppercase tracking-[0.22em]`}
-        style={{ color: palette.accent }}
-      >
-        {kicker}
-      </p>
-      <h3
-        className={`${theSeasons.className} mt-2 text-xl uppercase tracking-[0.1em] sm:text-2xl`}
-        style={{ color: palette.heading }}
-      >
-        {withSpecialMarks(title)}
-      </h3>
-      <div
-        className="mx-auto my-4 h-px w-12 sm:my-5"
-        style={{
-          background:
-            "linear-gradient(to right, transparent, color-mix(in srgb, var(--color-motif-deep) 38%, transparent), transparent)",
-        }}
-        aria-hidden
-      />
-      <div className="space-y-5">{children}</div>
     </div>
   )
 }
@@ -200,37 +181,48 @@ export function DressCode() {
         >
           We kindly ask our guests to join us in our color theme.
         </p>
-        <div className="mx-auto mt-5 max-w-xs sm:mt-6">
-          <ColorPalette />
-        </div>
         <div className="flex items-center justify-center pt-4 sm:pt-5">
           <span className="h-px w-16 sm:w-24 md:w-32" style={dividerLineStyle} />
         </div>
       </div>
 
-      <div className="relative z-20 mx-auto grid max-w-4xl gap-10 px-4 sm:px-6 md:grid-cols-[1fr_auto_1fr] md:items-start md:gap-8 md:px-8">
-        <AttireGroup kicker="Our Entourage" title="Formal">
-          <AttireLine label="Ladies" value="Silver or Gray Long Gown/Dress" />
-          <AttireLine label="Gentlemen" value="Silver or Gray Barong Tagalog with Black Pants" />
-        </AttireGroup>
-
-        <div className="hidden md:flex md:min-h-full md:flex-col md:items-center" aria-hidden>
-          <span
-            className="h-2.5 w-2.5 rounded-full"
-            style={{ backgroundColor: palette.accent }}
-          />
-          <span
-            className="mt-2 w-px flex-1 min-h-[12rem]"
-            style={{
-              background:
-                "linear-gradient(to bottom, color-mix(in srgb, var(--color-welcome-green) 55%, transparent), color-mix(in srgb, var(--color-motif-deep) 18%, transparent))",
-            }}
-          />
+      <div className="relative z-20 mx-auto max-w-xl px-6 text-center sm:px-8">
+        <div>
+          <h3
+            className={`${cinzel.className} ${sectionType.label} font-semibold uppercase tracking-[0.28em]`}
+            style={{ color: palette.heading }}
+          >
+            Entourage
+          </h3>
+          <div className="mt-5 space-y-1.5">
+            <AttireLabel>Ladies</AttireLabel>
+            <AttireLine>Silver or Gray Long Gown</AttireLine>
+            <AttireLabel>Gentlemen</AttireLabel>
+            <AttireLine>Silver or Gray Barong Tagalog</AttireLine>
+            <AttireLine>Black Pants</AttireLine>
+          </div>
         </div>
 
-        <AttireGroup kicker="Our Guests" title="Semi-Formal / Cocktail">
-          <AttireLine label="Attire" value="Silver or Gray attire only." />
-        </AttireGroup>
+        <div
+          className="mx-auto my-8 h-px w-16 sm:my-10"
+          style={dividerLineStyle}
+          aria-hidden
+        />
+
+        <div>
+          <h3
+            className={`${cinzel.className} ${sectionType.label} font-semibold uppercase tracking-[0.28em]`}
+            style={{ color: palette.heading }}
+          >
+            Guests
+          </h3>
+          <div className="mt-5 space-y-1.5">
+            <AttireLine>{withSpecialMarks("Semi-Formal / Cocktail")}</AttireLine>
+            <AttireLine>Silver or Gray Attire Only</AttireLine>
+          </div>
+        </div>
+
+        <ColorSeals />
       </div>
     </section>
   )
