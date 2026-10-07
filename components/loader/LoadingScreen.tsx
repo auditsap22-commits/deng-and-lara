@@ -51,7 +51,7 @@ const GHOST_NUMBERS = getDateSegments(EVENT_DATE)
 const DAYS_REMAINING = getDaysUntil(EVENT_DATE)
 const PARSED_EVENT = parseWeddingDate(EVENT_DATE)
 const CEREMONY_DAY = (siteConfig.ceremony.day ?? PARSED_EVENT.dayOfWeek).toUpperCase()
-const CEREMONY_TIME = siteConfig.ceremony.time ?? siteConfig.wedding.time
+const CEREMONY_TIME = "4:00 PM"
 
 const dateLabelStyle = {
   fontFamily: "var(--font-cinzel), Cinzel, serif",

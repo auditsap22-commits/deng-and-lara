@@ -26,7 +26,7 @@ export const siteConfig = {
   },
   wedding: {
     date: "December 13, 2026",
-    time: "5:00 PM",
+    time: "4:00 PM",
     venue: "San Pablo MPC Pavilion, Malolos, Bulacan",
     tagline: "are getting married!!!!!",
     theme: "Our wedding palette is inspired by timeless elegance and warmth.Motif Colors: Champagne Gold, Soft Beige, Warm Soft Brown",
@@ -84,9 +84,9 @@ export const siteConfig = {
     map: "https://maps.app.goo.gl/nyXehbkv6yCjHQLM6",
     date: "December 13, 2026",
     day: "Sunday",
-    time: "5:00 PM",
-    entourageTime: "12:00 PM",
-    guestsTime: "4:00 PM",
+    time: "4:00 PM",
+    entourageTime: "2:00 PM",
+    guestsTime: "3:00 PM",
     image: ["/Details/venue.jpg"],
   },
   reception: {

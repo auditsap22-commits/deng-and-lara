@@ -28,7 +28,7 @@ const HERO_DATE = {
   dayOfWeek: "SUNDAY",
   dayNumber: "13",
   year: "2026",
-  time: "5pm",
+  time: "4:00 PM",
 }
 
 function OrnamentalDivider({ compact = false }: { compact?: boolean }) {

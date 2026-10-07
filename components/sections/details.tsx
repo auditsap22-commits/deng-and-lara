@@ -139,7 +139,6 @@ export function Details() {
 
   const eventDate = new Date(siteConfig.ceremony.date)
   const day = siteConfig.ceremony.day
-  const time = "4:00 PM"
 
   useEffect(() => {
     if (!showMap) return
@@ -233,6 +232,11 @@ export function Details() {
                   >
                     Ceremony &amp; Reception
                   </span>
+                  <p
+                    className={`${cinzel.className} mb-2 text-sm font-semibold uppercase tracking-[0.18em] text-white drop-shadow-md sm:text-base md:text-lg`}
+                  >
+                    Ceremony / Mass at 4:00 PM
+                  </p>
                   <h3
                     className={`${theSeasons.className} mb-1 text-lg font-semibold uppercase leading-tight tracking-[0.1em] text-white drop-shadow-lg sm:text-xl md:text-2xl lg:text-3xl`}
                   >
@@ -282,7 +286,7 @@ export function Details() {
                     className={`${cinzel.className} text-sm font-semibold uppercase tracking-[0.14em] sm:text-base md:text-lg lg:text-xl`}
                     style={{ color: detailText.heading }}
                   >
-                    Ceremony / Mass at {time}
+                    Ceremony / Mass
                   </p>
                   <p
                     className={`font-goudy-italic mx-auto mt-2 max-w-md ${ct.body}`}

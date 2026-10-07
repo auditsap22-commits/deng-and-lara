@@ -96,7 +96,12 @@ const MILESTONE_SPONSORS = {
   description:
     "To witness our 25-year covenant: anchoring our domestic church with the same spiritual foundation, love, and guidance that brought us from our wedding day to this silver milestone.",
   couples: [
-    ["Mr. Orlando", "Mrs. Gina Araujo"],
+    ["Mr. Orlando Araujo", "Mrs. Gina Araujo"],
+    ["Mr. Rene Marcos", "Mrs. Amor Landas-Marcos"],
+    ["Engr. Noel Griño", "Mrs. Deanna Griño"],
+    ["Atty. Arnel Santos", "Atty. Mariter Santos"],
+    ["Engr. Demi Aquino", "Mrs. Jean Aquino"],
+    ["Dr. Edilberto Cavaneyro", "Mrs. Lucita Cavaneyro"],
   ] as Couple[],
 }
 
